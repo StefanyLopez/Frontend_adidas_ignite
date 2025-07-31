@@ -1,0 +1,43 @@
+/* src/styles/AdminPage.css */
+
+.admin-container {
+  padding: 2rem;
+  background-color: #eef3f7;       /* Fondo suave */
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+}
+
+.admin-header {
+  font-size: 2.25rem;
+  margin-bottom: 1.5rem;
+  color: #1565c0;                  /* Azul oscuro */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-hr {
+  border: 0;
+  height: 1px;
+  background-color: #c3cfd9;
+  margin: 2rem 0;
+}
+
+/* Botones globales (puedes refinar más adelante) */
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-approve {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.btn-reject {
+  background-color: #f44336;
+  color: #fff;
+}

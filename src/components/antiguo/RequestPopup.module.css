@@ -1,0 +1,37 @@
+
+
+.popupContainer {
+  width: 320px;
+  max-height: 60vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  padding: 1rem;
+  position: relative;
+}
+
+
+/* Botón cerrar */
+.closeBtn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #000;              /* asegúrate que la ✖ sea negra */
+}
+
+/* Texto e íconos dentro del popup */
+.popupContainer h2,
+.popupContainer p,
+.popupContainer li,
+.popupContainer button,
+.popupContainer span {
+  color: inherit;           /* heredan el color negro */
+}
+
+
+

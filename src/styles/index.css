@@ -1,0 +1,57 @@
+@font-face {
+  font-family: adineue;
+  src: url('../assets/fonts/adineue_PRO.ttf');
+}
+@font-face {
+  font-family: BebasNeue;
+  src: url('../assets/fonts/BebasNeue-Regular.ttf');
+}
+
+@import "tailwindcss";
+
+
+@theme {
+  --font-adi: AdiNeue, sans-serif;
+  --font-bebas: BebasNeue, sans-serif;
+
+  --color-orange: #FF9D00 ;
+  --color-white: #F2F2F2 ;
+  --color-bg: #171717 ;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-adineue);
+    background-color: var(--color-bg);
+    color: var(--color-orange);
+    color-scheme: var(--color-white);
+  }
+
+  h1 {
+    font-size: 2.25rem; /* Tailwind text-4xl */
+    font-family: var(--font-bebasneue);
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: 1.875rem; /* Tailwind text-3xl */
+    font-family: var(--font-bebasneue);
+    color: var(--color-secondary);
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: 1.5rem; /* Tailwind text-2xl */
+    font-family: var(--font-bebasneue);
+    color: var(--color-secondary);
+    font-weight: 500;
+  }
+
+  p {
+    font-size: 1rem; /* Tailwind text-base */
+    font-family: var(--font-adineue);
+    color: var(--color-secondary);
+    line-height: 1.6;
+  }
+}
