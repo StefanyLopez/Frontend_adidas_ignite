@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import AssetModal from "../Antiguo/AssetModal.jsx";
-
+import AssetModal from "./AssetModal";
 
 const formatIsoDate = (iso) => {
   if (!iso) return "";
@@ -8,24 +7,34 @@ const formatIsoDate = (iso) => {
   return `${day}/${parseInt(month, 10)}/${year}`;
 };
 
+const formatSize = (bytes) => {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+};
+
+const cellStyle = {
+  padding: "8px",
+  borderBottom: "1px solid #ddd",
+};
+
 const AdminDashboard = ({ requests, onUpdateStatus, assetsCatalog }) => {
-  const [ventarch, setVentarch] = useState([]);
-  const [ventavisi, setVentavisi] = useState(false);
+  const [modalAssets, setModalAssets] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  const getArchivosReq = (ids) => {
-    if (!Array.isArray(ids)) return [];
-    return assetsCatalog.filter((asset) => ids.includes(asset.id));
+  const getArchivosReq = (ids) =>
+    Array.isArray(ids)
+      ? assetsCatalog.filter((asset) => ids.includes(asset.id))
+      : [];
+
+  const openModal = (ids) => {
+    setModalAssets(getArchivosReq(ids));
+    setModalOpen(true);
   };
 
-  const abrirVen = (items) => {
-    const archivos = getArchivosReq(items);
-    setVentarch(archivos);
-    setVentavisi(true);
-  };
-
-  const cerrarVen = () => {
-    setVentavisi(false);
-    setVentarch([]);
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalAssets([]);
   };
 
   return (
@@ -46,7 +55,7 @@ const AdminDashboard = ({ requests, onUpdateStatus, assetsCatalog }) => {
         </thead>
         <tbody>
           {requests.map((req) => {
-            const numArchivos = Array.isArray(req.items) ? req.items.length : 0;
+            const count = Array.isArray(req.items) ? req.items.length : 0;
             return (
               <tr key={req.id} style={{ borderBottom: "1px solid #ddd" }}>
                 <td>{req.requesterName}</td>
@@ -62,9 +71,9 @@ const AdminDashboard = ({ requests, onUpdateStatus, assetsCatalog }) => {
                 <td>{formatIsoDate(req.deadline)}</td>
                 <td>{req.status}</td>
                 <td>
-                  {numArchivos > 0 ? (
+                  {count > 0 ? (
                     <button
-                      onClick={() => abrirVen(req.items)}
+                      onClick={() => openModal(req.items)}
                       style={{
                         background: "none",
                         border: "none",
@@ -74,7 +83,7 @@ const AdminDashboard = ({ requests, onUpdateStatus, assetsCatalog }) => {
                         padding: 0,
                       }}
                     >
-                      {numArchivos} archivo{numArchivos > 1 ? "s" : ""}
+                      {count} archivo{count > 1 ? "s" : ""}
                     </button>
                   ) : (
                     <em>No hay archivos</em>
@@ -100,8 +109,8 @@ const AdminDashboard = ({ requests, onUpdateStatus, assetsCatalog }) => {
         </tbody>
       </table>
 
-      {ventavisi && (
-        <AssetModal assets={ventarch} onClose={cerrarVen} />
+      {isModalOpen && (
+        <AssetModal assets={modalAssets} onClose={closeModal} />
       )}
     </div>
   );
@@ -127,4 +136,6 @@ const rejectBtn = {
 };
 
 export default AdminDashboard;
+
+
 

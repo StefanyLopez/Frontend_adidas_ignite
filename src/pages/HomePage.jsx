@@ -1,157 +1,26 @@
-// import { useState, useEffect, useMemo } from "react";
-// import styles from "./HomePage.module.css";
-// import AssetsPanel from "../components/AssetsPanel";
-// import RequestPopup from "../components/RequestPopup";
-// import { MediaService } from "../utilities/mediaService";
-// import LoginAdminModal from "../components/LoginAdminModal";
-
-
-// const HomePage = () => {
-//   const [mediaAssets, setMediaAssets] = useState([]);
-//   const [selectedAssets, setSelectedAssets] = useState([]);
-//   const [showPopup, setShowPopup] = useState(false);
-//   const [showLoginModal, setShowLoginModal] = useState(false);
-
-
-//   const mediaService = useMemo(
-//     () => new MediaService("http://localhost:3000"),
-//     []
-//   );
-
-//   useEffect(() => {
-//     mediaService
-//       .fetchAssets()
-//       .then((assets) => {
-//         console.log("URLs cargadas:", assets.map((a) => a.url));
-//         setMediaAssets(assets);
-//       })
-//       .catch((err) => console.error("Error al cargar assets:", err));
-//   }, [mediaService]);
-
-//   const handleSelect = (item) => {
-//     setSelectedAssets((prev) => {
-//       const exists = prev.some((a) => a.id === item.id);
-//       return exists
-//         ? prev.filter((a) => a.id !== item.id)
-//         : [...prev, item];
-//     });
-//   };
-
-//   const handleRemoveAsset = (id) => {
-//     setSelectedAssets((prev) => prev.filter((a) => a.id !== id));
-//   };
-
-//   const handleSubmitRequest = async (formData) => {
-//     const selected = new Date(formData.deadline).setHours(0, 0, 0, 0);
-//     const startToday = new Date().setHours(0, 0, 0, 0);
-//     if (selected < startToday) {
-//       alert("La fecha límite no puede ser anterior a hoy.");
-//       return;
-//     }
-
-//     const payload = {
-//       requesterName: formData.name,
-//       requesterEmail: formData.email,
-//       assetType: formData.assetType,
-//       purpose: formData.purpose,
-//       deadline: formData.deadline,
-//       items: selectedAssets.map((a) => a.id),
-//     };
-
-//     try {
-//       const response = await fetch(
-//         "http://localhost:3000/test/requests",
-//         {
-//           method: "POST",
-//           headers: { "Content-Type": "application/json" },
-//           body: JSON.stringify(payload),
-//         }
-//       );
-
-//       if (response.ok) {
-//         alert("✅ Solicitud enviada");
-//         setSelectedAssets([]);
-//         setShowPopup(false);
-//       } else {
-//         alert("❌ Error al enviar");
-//       }
-//     } catch (error) {
-//       alert("❌ Error de conexión");
-//     }
-//   };
-
-//   return (
-//     <div className={styles.container}>
-//       <header className={styles.header}>
-//         <img src="/logo.jpg" alt="Logo" className={styles.logo} />
-//         <button
-//           className={styles.loginButton}
-//           onClick={() => setShowLoginModal(true)}
-//         >
-//           Login Admin
-//         </button>
-//       </header>
-
-//       <div className={styles.banner} />
-
-//       <div className={styles.pageContent}>
-//         <h1 className={styles.title}>Galería de medios</h1>
-//         <AssetsPanel
-//           assets={mediaAssets}
-//           selectedIds={selectedAssets.map((a) => a.id)}
-//           onSelect={handleSelect}
-//         />
-//       </div>
-//         {showPopup && (
-//       <div className={styles.popupWrapper}>
-//         <RequestPopup
-//           selectedAssets={selectedAssets}
-//           onClose={() => setShowPopup(false)}
-//           onRemoveAsset={handleRemoveAsset}
-//           onSubmit={handleSubmitRequest}
-//         />
-//       </div>
-//     )}
-
-//     {/* 2) El carrito: */}
-//     <div className={styles.cartContainer}>
-//       <button
-//         className={styles.cartButton}
-//         onClick={() => setShowPopup((v) => !v)}
-//       >
-//         🛒 ({selectedAssets.length})
-//       </button>
-//       </div> 
-//     {showLoginModal && (
-//     <LoginAdminModal onClose={() => setShowLoginModal(false)} />
-//     )}    
-//     </div>
-//   );
-// };
-
-// export default HomePage;
-
-
-import { useState, useEffect, useMemo } from "react";
-import styles from "./HomePage.module.css";
-import AssetsPanel from "../components/antiguo/AssetsPanel";
+import { useState, useEffect, useMemo, useRef } from "react";
 import RequestPopup from "../components/antiguo/RequestPopup";
-import LoginAdminModal from "../components/antiguo/LoginAdminModal";
+import LoginAdminModal from "../components/LoginAdminModal";
+import SelectionCart from "../components/SelectionCart";
 import { MediaService } from "../utilities/mediaService";
 import Header from "../components/Header";
 import SplineBanner from "../components/Banner";
 import Footer from "../components/Footer";
 import PartnersBar from "../components/PartnersBar";
 import FilterMenu from "../components/FilterMenu";
-import Card from "../components/Gallery/Card";
 import Gallery from "../components/Gallery/Gallery";
-
+import Card from "../components/Gallery/Card";
+import AssetModal from "../components/AssetModal";
 
 const HomePage = () => {
   const [mediaAssets, setMediaAssets] = useState([]);
   const [selectedAssets, setSelectedAssets] = useState([]);
+  const [selectedPreviewAsset, setSelectedPreviewAsset] = useState(null); // ✅ Cambio: un solo asset
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [showCart, setShowCart] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const cartButtonRef = useRef(null);
 
   const mediaService = useMemo(
     () => new MediaService("http://localhost:3000"),
@@ -168,35 +37,64 @@ const HomePage = () => {
       .catch((err) => console.error("Error al cargar assets:", err));
   }, [mediaService]);
 
-
-  const handleSelect = (item) => {
+  const handleSelect = (asset) => {
+    console.log("HomePage - Selecting/deselecting asset:", asset);
     setSelectedAssets((prev) => {
-      const exists = prev.some((a) => a.id === item.id);
-      return exists
-        ? prev.filter((a) => a.id !== item.id)
-        : [...prev, item];
+      const exists = prev.some((a) => a.id === asset.id);
+      if (exists) {
+        const updated = prev.filter((a) => a.id !== asset.id);
+        console.log("Asset removed, new count:", updated.length);
+        return updated;
+      } else {
+        const updated = [...prev, asset];
+        console.log("Asset added, new count:", updated.length);
+        return updated;
+      }
     });
   };
 
-  const handleRemoveAsset = (id) => {
-    setSelectedAssets((prev) => prev.filter((a) => a.id !== id));
+  const handleRemoveAsset = (assetId) => {
+    console.log("Removing asset:", assetId);
+    setSelectedAssets((prev) => prev.filter((a) => a.id !== assetId));
+  };
+
+  // ✅ Cambio: Función corregida para abrir el AssetModal
+  const handleOpenPreview = (asset) => {
+    console.log("Opening AssetModal for:", asset);
+    setSelectedPreviewAsset(asset); // Guardar el asset completo
+    setIsPreviewOpen(true);
+  };
+
+  // ✅ Cambio: Función corregida para cerrar el AssetModal
+  const handleClosePreview = () => {
+    console.log("Closing AssetModal");
+    setIsPreviewOpen(false);
+    setSelectedPreviewAsset(null);
+  };
+
+  const handleContinueToRequest = () => {
+    console.log("Continuing to request with assets:", selectedAssets);
+    setShowCart(false);
+    setShowPopup(true);
   };
 
   const handleSubmitRequest = async (formData) => {
     const selected = new Date(formData.deadline).setHours(0, 0, 0, 0);
     const startToday = new Date().setHours(0, 0, 0, 0);
+    
     if (selected < startToday) {
-      alert("La fecha límite no puede ser anterior a hoy.");
+      // Mantener este alert porque es validación, no confirmación
+      alert("The deadline cannot be earlier than today.");
       return;
     }
 
     const payload = {
       requesterName: formData.name,
       requesterEmail: formData.email,
-      assetType: formData.assetType,
       purpose: formData.purpose,
       deadline: formData.deadline,
       items: selectedAssets.map((a) => a.id),
+      assetsCount: selectedAssets.length
     };
 
     try {
@@ -207,55 +105,76 @@ const HomePage = () => {
       });
 
       if (response.ok) {
-        alert("✅ Solicitud enviada");
-        setSelectedAssets([]);
-        setShowPopup(false);
+        // ✅ Remover alert - el popup se encargará de mostrar la confirmación
+        setSelectedAssets([]); // Limpiar selección
+        // No cerrar el cart aquí, el popup manejará el flujo
       } else {
-        alert("❌ Error al enviar");
+        throw new Error("Server error");
       }
     } catch (error) {
-      alert("❌ Error de conexión");
+      console.error("Error:", error);
+      // ✅ Solo lanzar el error, el popup lo manejará
+      throw error;
     }
   };
 
-return (
+  const selectedAssetsArray = Array.isArray(selectedAssets) ? selectedAssets : [];
+  const selectedIds = selectedAssetsArray.map((a) => a.id);
+
+  console.log("Render - selectedAssets:", selectedAssetsArray.length, "showCart:", showCart);
+
+  return (
     <div className="min-h-screen flex flex-col bg-bg text-white">
       <Header onLoginClick={() => setShowLoginModal(true)} />
 
-      {/* Contenido principal */}
       <SplineBanner />
       <PartnersBar />
       <FilterMenu />
       
-
       <main className="flex-grow px-20 py-10">
-
-        <Gallery 
+        <Gallery
           assets={mediaAssets}
-          selectedIds={selectedAssets.map((a) => a.id)}
-          onSelect={handleSelect} />
+          selectedIds={selectedIds}
+          onSelect={handleSelect}
+          onOpenModal={handleOpenPreview} // ✅ Usar la función corregida
+        />
       </main>
 
-      {/* Carrito flotante */}
-      <div className="fixed bottom-46 right-16 z-50">
+      {/* Botón del carrito */}
+      <div className="fixed bottom-16 right-16 z-40">
         <button
-          onClick={() => setShowPopup((v) => !v)}
-          className="w-16 h-16 rounded-full bg-orange text-white text-xl shadow-lg hover:scale-105 transition"
+          ref={cartButtonRef}
+          onClick={() => {
+            console.log("Cart button clicked, assets:", selectedAssets.length);
+            if (selectedAssets.length === 0) {
+              alert("No tienes assets seleccionados");
+              return;
+            }
+            setShowCart(true);
+          }}
+          className={`w-16 h-16 rounded-full bg-orange text-white text-xl shadow-lg hover:scale-105 transition relative ${
+            selectedAssets.length === 0 ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
+          disabled={selectedAssets.length === 0}
         >
-          🛒{selectedAssets.length > 0 && ` (${selectedAssets.length})`}
+          🛒
+          {selectedAssets.length > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
+              {selectedAssets.length}
+            </span>
+          )}
         </button>
       </div>
 
-      {/* Popup de solicitud */}
-      {showPopup && (
-        <div className="fixed bottom-[240px] right-16 z-49">
-          <RequestPopup
-            selectedAssets={selectedAssets}
-            onClose={() => setShowPopup(false)}
-            onRemoveAsset={handleRemoveAsset}
-            onSubmit={handleSubmitRequest}
-          />
-        </div>
+      {/* Popup del carrito */}
+      {showCart && (
+        <RequestPopup
+          selectedAssets={selectedAssets}
+          onClose={() => setShowCart(false)}
+          onRemoveAsset={handleRemoveAsset}
+          onSubmit={handleSubmitRequest}
+          cartButtonRef={cartButtonRef}
+        />
       )}
 
       {/* Modal de login */}
@@ -263,11 +182,17 @@ return (
         <LoginAdminModal onClose={() => setShowLoginModal(false)} />
       )}
 
+      {/* ✅ CAMBIO PRINCIPAL: Usar AssetModal en lugar del modal básico */}
+      {isPreviewOpen && selectedPreviewAsset && (
+        <AssetModal 
+          asset={selectedPreviewAsset} 
+          onClose={handleClosePreview} 
+        />
+      )}
+
       <Footer />
     </div>
   );
-}
+};
+
 export default HomePage;
-
-
-
