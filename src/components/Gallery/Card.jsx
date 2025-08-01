@@ -44,7 +44,7 @@ const Card = ({ asset, selectedIds, onSelect, onOpenModal }) => {
               onError={() => console.error("Error al cargar video:", asset.url)}
             >
               <source src={asset.url} type="video/mp4" />
-              Tu navegador no soporta videos HTML5.
+              Your browser does not support HTML5 videos.
             </video>
           )}
 
@@ -98,7 +98,7 @@ const Card = ({ asset, selectedIds, onSelect, onOpenModal }) => {
 
       {/* Panel de información responsivo */}
       <div
-        className="absolute left-0 right-0 bg-bg rounded-b-xl shadow-xl overflow-hidden transition-all duration-500 ease-out z-40"
+        className="absolute left-0 right-0  rounded-b-xl  overflow-hidden transition-all duration-500 ease-out z-40"
         style={{
           top: '100%',
           height: isHovered ? '180px' : '0px',
@@ -114,7 +114,7 @@ const Card = ({ asset, selectedIds, onSelect, onOpenModal }) => {
         <div className="p-3 sm:p-4 border-t-2 border-orange-400 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-x-12 items-center text-white text-center">
           {/* Título */}
           <div className="flex flex-col justify-center">
-            <h3 className="font-adi text-lg sm:text-xl lg:text-2xl truncate">{asset.titulo}</h3>
+            <h3 className="font-adi text-lg sm:text-xl lg:text-2xl">{asset.titulo}</h3>
           </div>
 
           {/* Info del archivo - oculto en móvil */}

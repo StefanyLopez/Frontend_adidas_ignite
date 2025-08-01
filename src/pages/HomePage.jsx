@@ -20,6 +20,8 @@ const HomePage = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [extensionFilter, setExtensionFilter] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const cartButtonRef = useRef(null);
 
   const mediaService = useMemo(
@@ -36,6 +38,36 @@ const HomePage = () => {
       })
       .catch((err) => console.error("Error al cargar assets:", err));
   }, [mediaService]);
+
+  const getExtension = (url) => {
+      const m = url.match(/\.([a-zA-Z0-9]+)(\?.*)?$/);
+      return m ? m[1].toLowerCase() : "";
+    };
+
+  const displayedAssets = useMemo(() => {
+    let filtered = mediaAssets;
+
+    // Filtrar por extensión
+    if (extensionFilter) {
+      filtered = filtered.filter(
+        (asset) => getExtension(asset.url) === extensionFilter
+      );
+    }
+
+    // Filtrar por término de búsqueda
+    if (searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase().trim();
+      filtered = filtered.filter(
+        (asset) =>
+          asset.titulo?.toLowerCase().includes(searchLower) ||
+          asset.descripcion?.toLowerCase().includes(searchLower) ||
+          asset.tags?.some(tag => tag.toLowerCase().includes(searchLower))
+      );
+    }
+
+    return filtered;
+  }, [extensionFilter, searchTerm, mediaAssets]);
+
 
   const handleSelect = (asset) => {
     console.log("HomePage - Selecting/deselecting asset:", asset);
@@ -126,19 +158,86 @@ const HomePage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-bg text-white">
       <Header onLoginClick={() => setShowLoginModal(true)} />
-
       <SplineBanner />
       <PartnersBar />
-      <FilterMenu />
       
-      <main className="flex-grow px-20 py-10">
+<main className="px-20 py-10">
+        {/* ✅ CAMBIO: Usar displayedAssets en lugar de mediaAssets */}
         <Gallery
-          assets={mediaAssets}
+          assets={displayedAssets}
           selectedIds={selectedIds}
           onSelect={handleSelect}
-          onOpenModal={handleOpenPreview} // ✅ Usar la función corregida
+          onOpenModal={handleOpenPreview}
         />
+
+        {/* ✅ Mostrar mensaje si no hay resultados */}
+        {displayedAssets.length === 0 && mediaAssets.length > 0 && (
+          <div className="text-center py-12">
+            <div className="mb-6">
+              <div className="w-24 h-24 rounded-full mx-auto mb-4 flex items-center justify-center bg-orange/10">
+                <span className="text-4xl">🔍</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-2 text-white font-bebas">
+                NO SE ENCONTRARON RESULTADOS
+              </h3>
+              <p className="text-lg text-white/70 mb-6 font-adi" >
+                {searchTerm && extensionFilter 
+                  ? `No hay assets de tipo "${extensionFilter.toUpperCase()}" que coincidan con "${searchTerm}"`
+                  : searchTerm 
+                  ? `No hay assets que coincidan con "${searchTerm}"`
+                  : `No hay assets de tipo "${extensionFilter?.toUpperCase()}"`
+                }
+              </p>
+            </div>
+            
+            <div className="flex gap-4 justify-center">
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm("")}
+                  className="px-6 py-3 bg-orange/20 text-orange border-2 border-orange rounded-xl hover:bg-orange hover:text-white transition-all duration-200 font-adi"
+                  style={{ fontFamily: 'var(--font-adi)' }}
+                >
+                  Limpiar búsqueda
+                </button>
+              )}
+              
+              {extensionFilter && (
+                <button
+                  onClick={() => setExtensionFilter(null)}
+                  className="px-6 py-3 bg-orange/20 text-orange border-2 border-orange rounded-xl hover:bg-orange hover:text-white transition-all duration-200 font-bold"
+                  style={{ fontFamily: 'var(--font-adi)' }}
+                >
+                  Mostrar todos los tipos
+                </button>
+              )}
+              
+              {(searchTerm || extensionFilter) && (
+                <button
+                  onClick={() => {
+                    setSearchTerm("");
+                    setExtensionFilter(null);
+                  }}
+                  className="px-6 py-3 bg-orange text-white rounded-xl hover:bg-orange-600 transition-all duration-200 font-adi"
+                >
+                  Limpiar todos los filtros
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ✅ Mostrar contador de resultados cuando hay filtros activos */}
+        {(searchTerm || extensionFilter) && displayedAssets.length > 0 && (
+          <div className="mb-6 text-center">
+            <p className="text-white/70" style={{ fontFamily: 'var(--font-adi)' }}>
+              Mostrando {displayedAssets.length} de {mediaAssets.length} assets
+              {extensionFilter && ` • Tipo: ${extensionFilter.toUpperCase()}`}
+              {searchTerm && ` • Búsqueda: "${searchTerm}"`}
+            </p>
+          </div>
+        )}
       </main>
+
 
       {/* Botón del carrito */}
       <div className="fixed bottom-16 right-16 z-40">
