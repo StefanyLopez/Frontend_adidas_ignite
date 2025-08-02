@@ -75,7 +75,12 @@ export default function RequestPopup({
   const handleFinalSubmit = async (formData) => {
     setIsSubmitting(true);
     try {
-      await onSubmit(formData);
+      const requestData = {
+        ...formData,
+        assets: selectedAssets.map(asset => asset.id),
+      };
+
+      await onSubmit(requestData);
       // ✅ Mostrar confirmación exitosa sin alert
       setShowConfirmation(true);
       setShowRequestForm(false);

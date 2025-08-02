@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AssetModal from "./AssetModal";
+import DashboardAssetsModal from "./DashboardAssetsModal.jsx";
 
 const formatIsoDate = (iso) => {
   if (!iso) return "";
