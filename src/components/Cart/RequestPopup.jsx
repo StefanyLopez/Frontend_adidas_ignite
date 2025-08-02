@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import RequestForm from "./RequestForm";
+import RequestForm from "./RequestForm.jsx";
 import Button from "../Button.jsx";
 
 export default function RequestPopup({

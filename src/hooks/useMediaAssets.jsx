@@ -7,9 +7,10 @@ export const useMediaAssets = () => {
   const [error, setError] = useState(null);
 
   const mediaService = useMemo(() => {
-    const baseURL = import.meta.env.VITE_API_URL;
+    const baseURL = "http://localhost:3000";
     return new MediaService(baseURL);
   }, []);
+
 
   useEffect(() => {
     mediaService

@@ -1,14 +1,11 @@
 import { useState, useEffect, useMemo, useRef } from "react";
-import RequestPopup from "../components/antiguo/RequestPopup";
-import SelectionCart from "../components/SelectionCart";
 import { MediaService } from "../utilities/mediaService";
 import Header from "../components/Header";
-import SplineBanner from "../components/Banner";
 import Footer from "../components/Footer";
+import SplineBanner from "../components/Banner";
 import PartnersBar from "../components/PartnersBar";
-import FilterMenu from "../components/FilterMenu";
 import Gallery from "../components/Gallery/Gallery";
-import Card from "../components/Gallery/Card";
+import RequestPopup from "../components/Cart/RequestPopup";
 import AssetModal from "../components/AssetModal";
 
 const HomePage = () => {
