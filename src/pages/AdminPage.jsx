@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 
-import styles from "./AdminPage.module.css";
 import AdminDashboard from "../components/AdminDashboard";
 import { MediaService } from "../utilities/mediaService";
-// import { RequestsByDayChart } from "../components/RequestsDay";
+import { requestsbyDay } from "../components/grouprequest";
 
 
 const AdminPage = () => {
@@ -55,8 +54,8 @@ const AdminPage = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.header}>Panel del Administrador</h1>
+    <div className="">
+      <h1 className="">Panel del Administrador</h1>
 
       <AdminDashboard
         requests={requests}
@@ -64,9 +63,9 @@ const AdminPage = () => {
         assetsCatalog={assetsCatalog}
       />
 
-      <hr className={styles.hr} />
+      <hr className="" />
 
-      <div className={styles.mediaSummaryContainer}>
+      <div className="">
         {[
           { label: "Imágenes", type: "image" },
           { label: "Videos", type: "video" },
@@ -76,10 +75,10 @@ const AdminPage = () => {
             a.type.toLowerCase().includes(type)
           ).length;
           return (
-            <div key={type} className={styles.mediaCard}>
-              <div className={styles.mediaContent}>
-                <div className={styles.mediaCount}>{count}</div>
-                <div className={styles.mediaLabel}>{label}</div>
+            <div key={type} className="">
+              <div className="">
+                <div className="">{count}</div>
+                <div className="">{label}</div>
               </div>
             </div>
           );
@@ -87,20 +86,20 @@ const AdminPage = () => {
       </div>
 
         <h2>Tabla de Archivos Multimedia</h2>
-        <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "1rem" }}>
+        <table className="">
           <thead>
-            <tr style={{ background: "#f0f0f0" }}>
-              <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Nombre</th>
-              <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Tipo</th>
-              <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Tamaño</th>
+            <tr className=""  >
+              <th className="">Nombre</th>
+              <th className="">Tipo</th>
+              <th className="">Tamaño</th>
             </tr>
           </thead>
           <tbody>
             {assetsCatalog.map((asset) => (
               <tr key={asset.id}>
-                <td style={{ padding: "8px", borderBottom: "1px solid #eee" }}>{asset.titulo}</td>
-                <td style={{ padding: "8px", borderBottom: "1px solid #eee" }}>{asset.type}</td>
-                <td style={{ padding: "8px", borderBottom: "1px solid #eee" }}>
+                <td className="">{asset.titulo}</td>
+                <td className="">{asset.type}</td>
+                <td className="">
                   {asset.size < 1024
                     ? `${asset.size} B`
                     : asset.size < 1024 * 1024
@@ -113,7 +112,7 @@ const AdminPage = () => {
         </table>
 
 
-      <hr className={styles.hr} />
+      <hr className="" />
     </div>
   );
 };
