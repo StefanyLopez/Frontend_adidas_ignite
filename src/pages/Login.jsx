@@ -6,24 +6,33 @@ import Footer from "../components/Footer";
 
 const LoginAdminModal = ({ onClose }) => {
   const navigate = useNavigate();
+  
+  // Form input states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
+  // Alert notification states
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState(""); // "success", "error", "warning"
 
+  // Show alert notification with auto-hide functionality
   const showAlert = (message, type = "error") => {
     setAlertMessage(message);
     setAlertType(type);
+    // Auto-hide alert after 4 seconds
     setTimeout(() => {
       setAlertMessage("");
       setAlertType("");
     }, 4000);
   };
 
+  // Email validation using regex
   const isValidEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
+  // Handle admin login authentication
   const handleSignIn = async () => {
+    // Validate email format before API call
     if (!isValidEmail(email)) {
       showAlert("⚠️ Please enter a valid email address", "warning");
       return;
@@ -40,6 +49,7 @@ const LoginAdminModal = ({ onClose }) => {
 
       if (response.ok) {
         showAlert("✅ Successful login", "success");
+        // Navigate to admin panel after successful login
         setTimeout(() => navigate("/admin"), 1000);
       } else if (response.status === 401) {
         showAlert("❌ Unauthorized user. Please verify your credentials.", "error");
@@ -53,12 +63,15 @@ const LoginAdminModal = ({ onClose }) => {
 
       console.error("Login error:", data);
     } catch (error) {
+      // Network or connection errors
       showAlert("❌ Could not connect to the server", "error");
       console.error("Connection failed:", error);
     }
   };
 
+  // Handle creating new admin user
   const handleCreateUser = async () => {
+    // Validate email format before API call
     if (!isValidEmail(email)) {
       showAlert("⚠️ Please enter a valid email address", "warning");
       return;
@@ -74,6 +87,7 @@ const LoginAdminModal = ({ onClose }) => {
       if (response.ok) {
         const result = await response.json();
         showAlert("✅ User created successfully", "success");
+        // Close modal after successful user creation
         setTimeout(() => onClose(), 2000);
       } else {
         const errorResult = await response.text();
@@ -81,6 +95,7 @@ const LoginAdminModal = ({ onClose }) => {
         console.error("Creation error:", errorResult);
       }
     } catch (error) {
+      // Network or connection errors
       showAlert("❌ Server connection error", "error");
       console.error("Connection error:", error);
     }
@@ -90,9 +105,10 @@ const LoginAdminModal = ({ onClose }) => {
     <div className="min-h-screen flex flex-col bg-white">
       <Header onLoginClick={() => setShowLoginModal(true)} />
 
+      {/* Main login container with background */}
       <div className="flex-1 flex items-center justify-center px-4 py-4 sm:py-8 relative" style={{ backgroundColor: '#171717d8' }}>
         
-        {/* Imagen de fondo responsive */}
+        {/* Responsive background image */}
         <div className="absolute inset-0 flex items-center justify-center">
           <img 
             src="/loginbg.png" 
@@ -101,16 +117,19 @@ const LoginAdminModal = ({ onClose }) => {
           />
         </div>
 
-        {/* Contenedor del login responsive */}
+        {/* Responsive login container */}
         <div className="relative z-10 flex flex-col items-center w-full max-w-md lg:max-w-none">
           
-          {/* Login Card responsive */}
+          {/* Responsive login card */}
           <div className="relative bg-bg font-bebas text-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 w-full min-h-[450px] sm:min-h-[500px] lg:w-145 lg:h-170 flex flex-col items-center justify-center gap-6 sm:gap-8 tracking-wider shadow-2xl">
 
+            {/* Logo */}
             <img src="../logos/adidas.png" alt="Logo" className="h-16 sm:h-20 lg:h-24 object-contain" />
 
+            {/* Title */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl text-center">ADMIN LOGIN</h1>
 
+            {/* Form inputs */}
             <div className="w-full space-y-4 sm:space-y-6 px-2 sm:px-0">
               <input
                 type="text"
@@ -129,17 +148,20 @@ const LoginAdminModal = ({ onClose }) => {
               />
             </div>
 
+            {/* Action buttons */}
             <div className="w-full space-y-3 sm:space-y-4">
+              {/* Sign in button */}
               <div className="flex justify-center translate-x-0 translate-x-[-30px]">
                 <Button text="Sign In" filled={true} onClick={handleSignIn} />
               </div>
+              {/* Create user button */}
               <div className="flex justify-center">
                 <Button text="Create User" filled={false} onClick={handleCreateUser} />
               </div>
             </div>
           </div>
 
-          {/* Área de alertas responsive */}
+          {/* Responsive alert area */}
           {alertMessage && (
             <div className="mt-4 sm:mt-6 w-full max-w-md lg:w-145 animate-fade-in px-2 sm:px-0">
               <div className={`
@@ -159,6 +181,7 @@ const LoginAdminModal = ({ onClose }) => {
 
       <Footer />
 
+      {/* CSS animation for alert fade-in effect */}
       <style jsx>{`
         @keyframes fade-in {
           from {

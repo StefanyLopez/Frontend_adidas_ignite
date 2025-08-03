@@ -9,48 +9,59 @@ import RequestPopup from "../components/Cart/RequestPopup";
 import AssetModal from "../components/AssetModal";
 
 const HomePage = () => {
+  // Main data states
   const [mediaAssets, setMediaAssets] = useState([]);
   const [selectedAssets, setSelectedAssets] = useState([]);
-  const [selectedPreviewAsset, setSelectedPreviewAsset] = useState(null); // ✅ Cambio: un solo asset
+  const [selectedPreviewAsset, setSelectedPreviewAsset] = useState(null); // Single asset for preview
+  
+  // UI modal states
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  
+  // Filter and search states
   const [extensionFilter, setExtensionFilter] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  
+  // Reference for cart button positioning
   const cartButtonRef = useRef(null);
 
+  // Media service instance for API calls
   const mediaService = useMemo(
     () => new MediaService("http://localhost:3000"),
     []
   );
 
+  // Fetch assets on component mount
   useEffect(() => {
     mediaService
       .fetchAssets()
       .then((assets) => {
-        console.log("URLs cargadas:", assets.map((a) => a.url));
+        console.log("URLs loaded:", assets.map((a) => a.url));
         setMediaAssets(assets);
       })
-      .catch((err) => console.error("Error al cargar assets:", err));
+      .catch((err) => console.error("Error loading assets:", err));
   }, [mediaService]);
 
+  // Extract file extension from URL
   const getExtension = (url) => {
       const m = url.match(/\.([a-zA-Z0-9]+)(\?.*)?$/);
       return m ? m[1].toLowerCase() : "";
     };
 
+  // Filter and search assets based on current filters
   const displayedAssets = useMemo(() => {
     let filtered = mediaAssets;
 
-    // Filtrar por extensión
+    // Filter by file extension
     if (extensionFilter) {
       filtered = filtered.filter(
         (asset) => getExtension(asset.url) === extensionFilter
       );
     }
 
-    // Filtrar por término de búsqueda
+    // Filter by search term (title, description, tags)
     if (searchTerm.trim()) {
       const searchLower = searchTerm.toLowerCase().trim();
       filtered = filtered.filter(
@@ -64,7 +75,7 @@ const HomePage = () => {
     return filtered;
   }, [extensionFilter, searchTerm, mediaAssets]);
 
-
+  // Handle asset selection/deselection for cart
   const handleSelect = (asset) => {
     console.log("HomePage - Selecting/deselecting asset:", asset);
     setSelectedAssets((prev) => {
@@ -81,41 +92,45 @@ const HomePage = () => {
     });
   };
 
+  // Remove specific asset from cart
   const handleRemoveAsset = (assetId) => {
     console.log("Removing asset:", assetId);
     setSelectedAssets((prev) => prev.filter((a) => a.id !== assetId));
   };
 
-  // ✅ Cambio: Función corregida para abrir el AssetModal
+  // Open asset preview modal
   const handleOpenPreview = (asset) => {
     console.log("Opening AssetModal for:", asset);
-    setSelectedPreviewAsset(asset); // Guardar el asset completo
+    setSelectedPreviewAsset(asset); // Store complete asset object
     setIsPreviewOpen(true);
   };
 
-  // ✅ Cambio: Función corregida para cerrar el AssetModal
+  // Close asset preview modal
   const handleClosePreview = () => {
     console.log("Closing AssetModal");
     setIsPreviewOpen(false);
     setSelectedPreviewAsset(null);
   };
 
+  // Continue from cart to request form
   const handleContinueToRequest = () => {
     console.log("Continuing to request with assets:", selectedAssets);
     setShowCart(false);
     setShowPopup(true);
   };
 
+  // Submit request with form data and selected assets
   const handleSubmitRequest = async (formData) => {
+    // Validate deadline is not in the past
     const selected = new Date(formData.deadline).setHours(0, 0, 0, 0);
     const startToday = new Date().setHours(0, 0, 0, 0);
     
     if (selected < startToday) {
-      // Mantener este alert porque es validación, no confirmación
       alert("The deadline cannot be earlier than today.");
       return;
     }
 
+    // Prepare request payload
     const payload = {
       requesterName: formData.name,
       requesterEmail: formData.email,
@@ -133,19 +148,19 @@ const HomePage = () => {
       });
 
       if (response.ok) {
-        // ✅ Remover alert - el popup se encargará de mostrar la confirmación
-        setSelectedAssets([]); // Limpiar selección
-        // No cerrar el cart aquí, el popup manejará el flujo
+        setSelectedAssets([]); // Clear selection after successful submission
+        // Popup will handle the success flow
       } else {
         throw new Error("Server error");
       }
     } catch (error) {
       console.error("Error:", error);
-      // ✅ Solo lanzar el error, el popup lo manejará
+      // Re-throw error for popup to handle
       throw error;
     }
   };
 
+  // Ensure selectedAssets is always an array and extract IDs
   const selectedAssetsArray = Array.isArray(selectedAssets) ? selectedAssets : [];
   const selectedIds = selectedAssetsArray.map((a) => a.id);
 
@@ -157,8 +172,8 @@ const HomePage = () => {
       <SplineBanner />
       <PartnersBar />
       
-<main className="px-20 py-10">
-        {/* ✅ CAMBIO: Usar displayedAssets en lugar de mediaAssets */}
+    <main className="px-20 py-10">
+        {/* Gallery component with filtered assets */}
         <Gallery
           assets={displayedAssets}
           selectedIds={selectedIds}
@@ -166,7 +181,7 @@ const HomePage = () => {
           onOpenModal={handleOpenPreview}
         />
 
-        {/* ✅ Mostrar mensaje si no hay resultados */}
+        {/* No results message when filters are applied */}
         {displayedAssets.length === 0 && mediaAssets.length > 0 && (
           <div className="text-center py-12">
             <div className="mb-6">
@@ -174,18 +189,19 @@ const HomePage = () => {
                 <span className="text-4xl">🔍</span>
               </div>
               <h3 className="text-2xl font-bold mb-2 text-white font-bebas">
-                NO SE ENCONTRARON RESULTADOS
+                NO RESULTS FOUND
               </h3>
               <p className="text-lg text-white/70 mb-6 font-adi" >
                 {searchTerm && extensionFilter 
-                  ? `No hay assets de tipo "${extensionFilter.toUpperCase()}" que coincidan con "${searchTerm}"`
+                  ? `No "${extensionFilter.toUpperCase()}" assets match "${searchTerm}"`
                   : searchTerm 
-                  ? `No hay assets que coincidan con "${searchTerm}"`
-                  : `No hay assets de tipo "${extensionFilter?.toUpperCase()}"`
+                  ? `No assets match "${searchTerm}"`
+                  : `No "${extensionFilter?.toUpperCase()}" assets found`
                 }
               </p>
             </div>
             
+            {/* Filter clear buttons */}
             <div className="flex gap-4 justify-center">
               {searchTerm && (
                 <button
@@ -193,7 +209,7 @@ const HomePage = () => {
                   className="px-6 py-3 bg-orange/20 text-orange border-2 border-orange rounded-xl hover:bg-orange hover:text-white transition-all duration-200 font-adi"
                   style={{ fontFamily: 'var(--font-adi)' }}
                 >
-                  Limpiar búsqueda
+                  Clear search
                 </button>
               )}
               
@@ -203,7 +219,7 @@ const HomePage = () => {
                   className="px-6 py-3 bg-orange/20 text-orange border-2 border-orange rounded-xl hover:bg-orange hover:text-white transition-all duration-200 font-bold"
                   style={{ fontFamily: 'var(--font-adi)' }}
                 >
-                  Mostrar todos los tipos
+                  Show all types
                 </button>
               )}
               
@@ -215,34 +231,33 @@ const HomePage = () => {
                   }}
                   className="px-6 py-3 bg-orange text-white rounded-xl hover:bg-orange-600 transition-all duration-200 font-adi"
                 >
-                  Limpiar todos los filtros
+                  Clear all filters
                 </button>
               )}
             </div>
           </div>
         )}
 
-        {/* ✅ Mostrar contador de resultados cuando hay filtros activos */}
+        {/* Results counter when filters are active */}
         {(searchTerm || extensionFilter) && displayedAssets.length > 0 && (
           <div className="mb-6 text-center">
             <p className="text-white/70" style={{ fontFamily: 'var(--font-adi)' }}>
-              Mostrando {displayedAssets.length} de {mediaAssets.length} assets
-              {extensionFilter && ` • Tipo: ${extensionFilter.toUpperCase()}`}
-              {searchTerm && ` • Búsqueda: "${searchTerm}"`}
+              Showing {displayedAssets.length} of {mediaAssets.length} assets
+              {extensionFilter && ` • Type: ${extensionFilter.toUpperCase()}`}
+              {searchTerm && ` • Search: "${searchTerm}"`}
             </p>
           </div>
         )}
       </main>
 
-
-      {/* Botón del carrito */}
+      {/* Floating cart button */}
       <div className="fixed bottom-16 right-16 z-40">
         <button
           ref={cartButtonRef}
           onClick={() => {
             console.log("Cart button clicked, assets:", selectedAssets.length);
             if (selectedAssets.length === 0) {
-              alert("No tienes assets seleccionados");
+              alert("No assets selected");
               return;
             }
             setShowCart(true);
@@ -253,6 +268,7 @@ const HomePage = () => {
           disabled={selectedAssets.length === 0}
         >
           🛒
+          {/* Badge showing selected assets count */}
           {selectedAssets.length > 0 && (
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
               {selectedAssets.length}
@@ -261,7 +277,7 @@ const HomePage = () => {
         </button>
       </div>
 
-      {/* Popup del carrito */}
+      {/* Cart popup modal */}
       {showCart && (
         <RequestPopup
           selectedAssets={selectedAssets}
@@ -272,12 +288,12 @@ const HomePage = () => {
         />
       )}
 
-      {/* Modal de login */}
+      {/* Login modal */}
       {showLoginModal && (
         <LoginAdminModal onClose={() => setShowLoginModal(false)} />
       )}
 
-      {/* ✅ CAMBIO PRINCIPAL: Usar AssetModal en lugar del modal básico */}
+      {/* Asset preview modal */}
       {isPreviewOpen && selectedPreviewAsset && (
         <AssetModal 
           asset={selectedPreviewAsset} 

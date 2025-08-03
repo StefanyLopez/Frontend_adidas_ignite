@@ -5,15 +5,16 @@ import Login from "./pages/Login";
 
 function App() {
   return (
-    // Configura las rutas de la aplicación
+    // Configure application routes
     <BrowserRouter>
       <Routes>
-        {/* Ruta principal - Muestra la página de inicio */}
+        {/* Main Route - Displays the home page */}
         <Route path="/" element={<HomePage />} />
 
+        {/* Login Path - Displays the Login page */}
         <Route path="/login" element={<Login />} />
         
-        {/* Ruta de administración - Muestra el panel de admin */}
+        {/* Admin Path - Displays the admin page */}
         <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </BrowserRouter>

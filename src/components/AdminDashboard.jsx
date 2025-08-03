@@ -1,37 +1,49 @@
 import React, { useState } from "react";
-import DashboardAssetsModal from "./DashboardAssetsModal.jsx";
 
+/**
+ * Format ISO date string to DD/MM/YYYY format
+ * @param {string} iso - ISO date string
+ * @returns {string} Formatted date string
+ */
 const formatIsoDate = (iso) => {
   if (!iso) return "";
   const [year, month, day] = iso.split("-");
   return `${day}/${parseInt(month, 10)}/${year}`;
 };
 
-const formatSize = (bytes) => {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-};
-
-const cellStyle = {
-  padding: "8px",
-  borderBottom: "1px solid #ddd",
-};
-
+/**
+ * AdminDashboard Component - Displays and manages asset requests
+ * @param {Array} requests - Array of request objects
+ * @param {Function} onUpdateStatus - Callback to update request status
+ * @param {Array} assetsCatalog - Complete catalog of available assets
+ */
 const AdminDashboard = ({ requests, onUpdateStatus, assetsCatalog }) => {
+  // Modal state for displaying requested assets
   const [modalAssets, setModalAssets] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
 
+  /**
+   * Get requested asset files by IDs from the catalog
+   * @param {Array} ids - Array of asset IDs
+   * @returns {Array} Array of matching asset objects
+   */
   const getArchivosReq = (ids) =>
     Array.isArray(ids)
       ? assetsCatalog.filter((asset) => ids.includes(asset.id))
       : [];
 
+  /**
+   * Open modal with requested assets
+   * @param {Array} ids - Array of asset IDs to display
+   */
   const openModal = (ids) => {
     setModalAssets(getArchivosReq(ids));
     setModalOpen(true);
   };
 
+  /**
+   * Close modal and clear selected assets
+   */
   const closeModal = () => {
     setModalOpen(false);
     setModalAssets([]);
@@ -40,35 +52,36 @@ const AdminDashboard = ({ requests, onUpdateStatus, assetsCatalog }) => {
 return (
   <div className="w-full">
 
-    {/* Contenedor de la tabla */}
+    {/* Table container with styling */}
     <div className="bg-bg rounded-xl shadow-2xl border border-white/10 overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[1000px]">
+          {/* Table header */}
           <thead>
             <tr className="bg-black/30 border-b border-white/10">
               <th className="text-left py-4 px-4 font-bebas text-white text-sm lg:text-base tracking-wider">
-                USUARIO
+                USER
               </th>
               <th className="text-left py-4 px-4 font-bebas text-white text-sm lg:text-base tracking-wider">
                 EMAIL
               </th>
               <th className="text-left py-4 px-4 font-bebas text-white text-sm lg:text-base tracking-wider">
-                DESCRIPCIÓN
+                DESCRIPTION
               </th>
               <th className="text-left py-4 px-4 font-bebas text-white text-sm lg:text-base tracking-wider">
-                FECHA SOLICITUD
+                REQUEST DATE
               </th>
               <th className="text-left py-4 px-4 font-bebas text-white text-sm lg:text-base tracking-wider">
-                FECHA LÍMITE
+                DEADLINE
               </th>
               <th className="text-left py-4 px-4 font-bebas text-white text-sm lg:text-base tracking-wider">
-                ESTADO
+                STATUS
               </th>
               <th className="text-left py-4 px-4 font-bebas text-white text-sm lg:text-base tracking-wider">
-                ARCHIVOS
+                FILES
               </th>
               <th className="text-center py-4 px-4 font-bebas text-white text-sm lg:text-base tracking-wider">
-                ACCIONES
+                ACTIONS
               </th>
             </tr>
           </thead>
@@ -76,7 +89,11 @@ return (
             {requests.map((req, index) => {
               const count = Array.isArray(req.items) ? req.items.length : 0;
               
-              // Determinar color del estado
+              /**
+               * Get status styling based on request status
+               * @param {string} status - Current request status
+               * @returns {string} Tailwind CSS classes for status badge
+               */
               const getStatusStyle = (status) => {
                 switch (status?.toLowerCase()) {
                   case 'approved':
@@ -104,7 +121,7 @@ return (
                     ${index % 2 === 0 ? 'bg-black/10' : 'bg-transparent'}
                   `}
                 >
-                  {/* Usuario */}
+                  {/* User column with avatar */}
                   <td className="py-4 px-4">
                     <div className="flex items-center">
                       <div className="w-8 h-8 bg-orange/20 rounded-full flex items-center justify-center mr-3">
@@ -118,19 +135,19 @@ return (
                     </div>
                   </td>
 
-                  {/* Email */}
+                  {/* Email column */}
                   <td className="py-4 px-4 font-adi text-white/70 text-sm">
                     {req.requesterEmail}
                   </td>
 
-                  {/* Descripción */}
+                  {/* Description column with truncation */}
                   <td className="py-4 px-4 font-adi text-white text-sm max-w-xs">
                     <div className="truncate" title={req.purpose}>
                       {req.purpose}
                     </div>
                   </td>
 
-                  {/* Fecha solicitud */}
+                  {/* Request date column */}
                   <td className="py-4 px-4 font-adi text-white/70 text-sm">
                     {new Date(req.createdAt).toLocaleDateString("es-CO", {
                       day: "2-digit",
@@ -139,12 +156,12 @@ return (
                     })}
                   </td>
 
-                  {/* Fecha límite */}
+                  {/* Deadline column */}
                   <td className="py-4 px-4 font-adi text-white/70 text-sm">
                     {formatIsoDate(req.deadline)}
                   </td>
 
-                  {/* Estado */}
+                  {/* Status badge column */}
                   <td className="py-4 px-4">
                     <span className={`
                       inline-flex px-3 py-1 rounded-full text-xs font-medium border
@@ -154,36 +171,36 @@ return (
                     </span>
                   </td>
 
-                  {/* Archivos */}
+                  {/* Files column with modal trigger */}
                   <td className="py-4 px-4">
                     {count > 0 ? (
                       <button
                         onClick={() => openModal(req.items)}
                         className="inline-flex items-center px-3 py-1 bg-orange/20 hover:bg-orange/30 text-orange border border-orange/50 rounded-lg transition-all duration-200 hover:scale-105 text-sm font-medium"
                       >
-                        📁 {count} archivo{count > 1 ? "s" : ""}
+                        📁 {count} file{count > 1 ? "s" : ""}
                       </button>
                     ) : (
                       <span className="text-white/40 italic text-sm">
-                        No hay archivos
+                        No files
                       </span>
                     )}
                   </td>
 
-                  {/* Acciones */}
+                  {/* Action buttons column */}
                   <td className="py-4 px-4">
                     <div className="flex flex-col sm:flex-row gap-2 justify-center">
                       <button
                         onClick={() => onUpdateStatus(req.id, "Approved")}
                         className="px-3 py-1 bg-green-900/50 hover:bg-green-800/70 text-green-200 border border-green-500/50 rounded-lg transition-all duration-200 hover:scale-105 text-xs font-medium min-w-[70px]"
                       >
-                        ✅ Aprobar
+                        ✅ Approve
                       </button>
                       <button
                         onClick={() => onUpdateStatus(req.id, "Rejected")}
                         className="px-3 py-1 bg-red-900/50 hover:bg-red-800/70 text-red-200 border border-red-500/50 rounded-lg transition-all duration-200 hover:scale-105 text-xs font-medium min-w-[70px]"
                       >
-                        ❌ Rechazar
+                        ❌ Reject
                       </button>
                     </div>
                   </td>
@@ -194,17 +211,17 @@ return (
         </table>
       </div>
       
-      {/* Estado vacío */}
+      {/* Empty state when no requests */}
       {requests.length === 0 && (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">📋</div>
-          <p className="text-white/50 font-adi mb-2">No hay solicitudes disponibles</p>
-          <p className="text-white/30 font-adi text-sm">Las nuevas solicitudes aparecerán aquí</p>
+          <p className="text-white/50 font-adi mb-2">No requests available</p>
+          <p className="text-white/30 font-adi text-sm">New requests will appear here</p>
         </div>
       )}
     </div>
 
-    {/* Modal */}
+    {/* Asset details modal */}
     {isModalOpen && (
       <AssetModal assets={modalAssets} onClose={closeModal} />
     )}
@@ -213,6 +230,3 @@ return (
 
 };
 export default AdminDashboard;
-
-
-
