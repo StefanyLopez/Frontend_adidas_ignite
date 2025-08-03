@@ -34,8 +34,8 @@ export default function RequestPopup({
         const popupHeight = 600;
         
         // Calculate the new position
-        let newTop = buttonRect.top - popupHeight - 20;
-        let newLeft = buttonRect.left - popupWidth - 20;
+        let newTop = buttonRect.top - popupHeight + 20 ;
+        let newLeft = buttonRect.left - popupWidth + 20;
         
         // Adjust if the popup goes off-screen
         if (newTop < 20) {
@@ -126,19 +126,19 @@ export default function RequestPopup({
             <span className="text-4xl">✓</span>
           </div>
           {/* Decorative circles */}
-          <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full animate-bounce color-orange"></div>
-          <div className="absolute -bottom-2 -left-2 w-4 h-4 rounded-full animate-bounce delay-150 color-orange opacity-70"></div>
+          <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full animate-bounce" style={{ backgroundColor: '#10B981' }}></div>
+          <div className="absolute -bottom-2 -left-2 w-4 h-4 rounded-full animate-bounce delay-150 opacity-70" style={{ backgroundColor: '#10B981' }} ></div>
         </div>
 
         <h2 className="text-4xl font-bebas mb-4 color-white">
           REQUEST SENT SUCCESSFULLY!
         </h2>
         
-        <p className="text-xl leading-relaxed mb-4 color-orange opacity-90">
+        <p className="text-xl font-adi leading-relaxed mb-4 color-orange opacity-90">
           Your request has been submitted successfully.
         </p>
         
-        <p className="text-lg leading-relaxed mb-8 color-white opacity-70" >
+        <p className="text-lg font-adi leading-relaxed mb-8 color-white opacity-70" >
           Our team will review your request and contact you soon.
         </p>
 
@@ -181,7 +181,7 @@ export default function RequestPopup({
               <div className="w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center color-orange/10">
                 <span className="text-4xl">🛒</span>
               </div>
-              <p className="text-xl color-white opacity-70">
+              <p className="text-xl font-adi leading-relaxed color-white opacity-70">
                 You have not selected any assets
               </p>
             </div>
@@ -198,7 +198,7 @@ export default function RequestPopup({
                 >
                   {selectedAssets.map((asset, index) => (
                     <div
-                      key={`${asset.id}-${index}`} // ✅ More stable key to avoid glitches
+                      key={asset.id}
                       className="relative rounded-xl overflow-hidden backdrop-blur-sm border-2 border-orange transition-all duration-200 hover:scale-105 group bg-orange/10"
                       style={{ 
                         minHeight: '120px'
@@ -210,7 +210,7 @@ export default function RequestPopup({
                           src={asset.url}
                           alt={asset.titulo}
                           className="w-full h-24 object-cover"
-                          loading="lazy" // ✅ Lazy loading for better performance
+                          loading="lazy" // Lazy loading for better performance
                         />
                       ) : (
                         // Fallback icon based on asset type
@@ -239,7 +239,7 @@ export default function RequestPopup({
                               e.stopPropagation();
                               onRemoveAsset(asset.id);
                             }}
-                            className="ml-2 p-1 rounded-full transition-all duration-200 hover:scale-110 opacity-0 group-hover:opacity-100 bg-orange/80 text-white"
+                            className="ml-2 p-1 rounded-full transition-all duration-200 hover:scale-110 opacity-0 group-hover:opacity-100 bg-orange/80 "
                             title="Remove asset"
                           >
                             🗑️
@@ -267,7 +267,7 @@ export default function RequestPopup({
         </div>
       </div>
 
-      {/* Fixed footer with action buttons */}
+      {/* Footer with action buttons */}
       <div className="p-6 border-t border-orange-500/20 flex-shrink-0">
         <div className="flex gap-10 justify-between">
           <Button text="← GO BACK" onClick={handleCloseWithAnimation} />
@@ -286,14 +286,7 @@ export default function RequestPopup({
       const renderFormView = () => (
       <div className="flex flex-col h-full">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-orange/20 flex-shrink-0">
-          <button
-            onClick={handleGoBack}
-            disabled={isSubmitting}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 text-orange bg-orange/10 font-adi font-bold"
-          >
-            ← BACK TO CART
-          </button>
+        <div className="flex justify-end p-6 border-b border-orange/20 flex-shrink-0">
           <button
             onClick={handleCloseWithAnimation}
             disabled={isSubmitting}

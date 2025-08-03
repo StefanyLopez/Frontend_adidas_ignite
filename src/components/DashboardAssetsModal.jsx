@@ -224,7 +224,7 @@ const DashboardAssetsModal = ({ assets, onClose, assetsCatalog = [] }) => {
               </div>
             )}
 
-            {/* Additional content for scroll testing */}
+            {/* Show total assets */}
             {assetsToShow.length > 0 && (
               <div className="mt-8 text-center">
                 <p className="text-white/30 text-sm">
@@ -235,7 +235,7 @@ const DashboardAssetsModal = ({ assets, onClose, assetsCatalog = [] }) => {
           </div>
 
           {/* Modal footer */}
-          <div className="p-6 bg-orange border-t border-white/20 text-center">
+          <div className="p-6 bg-orange border-t border-bg text-center">
             <button
               onClick={onClose}
               className="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors duration-200 font-adi font-bold"

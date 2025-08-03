@@ -1,8 +1,8 @@
-import React, { useRef, useState, useMemo } from "react";
+import { useRef, useState, useMemo } from "react";
+import { useMediaAssets } from "../../hooks/useMediaAssets";
 import Card from "./Card";
 import AssetModal from "../AssetModal.jsx";
 import FilterMenu from "../FilterMenu";
-import { useMediaAssets } from "../../hooks/useMediaAssets";
 import Button from "../Button.jsx"
 
 
@@ -29,7 +29,7 @@ const Gallery = ({ selectedIds = [], onSelect, onOpenModal }) => {
   const [extensionFilter, setExtensionFilter] = useState(null); // Filter by file extension
   const [searchTerm, setSearchTerm] = useState("");             // Search term for text filtering
 
-  // Reference to the grid container for potential GSAP animations
+  // Reference to the grid container
   const containerRef = useRef(null);
 
   /**
@@ -139,7 +139,7 @@ const Gallery = ({ selectedIds = [], onSelect, onOpenModal }) => {
       <div className="px-4 sm:px-6 lg:px-8">
         {/* Gallery header with title and results counter */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-adi text-orange">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bebas text-orange">
             Asset Gallery
           </h2>
           

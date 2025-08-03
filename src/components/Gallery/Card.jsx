@@ -38,7 +38,7 @@ const Card = ({ asset, selectedIds, onSelect, onOpenModal }) => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Asset display container with gradient fallback background */}
+        {/* Asset display container */}
         <div className="relative w-full h-full overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 shadow-lg">
           
           {/* Image asset rendering */}
@@ -119,7 +119,7 @@ const Card = ({ asset, selectedIds, onSelect, onOpenModal }) => {
 
       {/* Responsive information panel - slides down on hover */}
       <div
-        className="absolute left-0 right-0 rounded-b-xl overflow-hidden transition-all duration-500 ease-out z-40"
+        className="absolute left-0 right-0 overflow-hidden transition-all duration-500 ease-out z-40"
         style={{
           top: '100%',
           height: isHovered ? '180px' : '0px',                    // Expand/collapse height
@@ -141,7 +141,7 @@ const Card = ({ asset, selectedIds, onSelect, onOpenModal }) => {
             <h3 className="font-adi text-sm sm:text-sm lg:text-lg">{asset.titulo}</h3>
           </div>
 
-          {/* File information section - hidden on mobile for better UX */}
+          {/* File information section */}
           <div className="hidden sm:flex flex-col justify-center">
             <p className="text-base sm:text-sm lg:text-xl">{asset.type}</p>      {/* File type */}
             <p className="text-md">{asset.dimensions}</p>                        {/* Dimensions */}

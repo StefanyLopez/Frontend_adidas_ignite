@@ -95,14 +95,14 @@ const AdminPage = () => {
       
       if (response.data.success) {
         showEmailNotification(
-          "✅ Correo enviado correctamente al usuario", 
+          "✅ Email sent successfully to user", 
           "success", 
           requestId
         );
         return true;
       } else {
         showEmailNotification(
-          "❌ Error al enviar el correo", 
+          "❌ Error sending email", 
           "error", 
           requestId
         );
@@ -111,7 +111,7 @@ const AdminPage = () => {
     } catch (error) {
       console.error("Error sending email:", error);
       showEmailNotification(
-        `❌ Error al enviar correo: ${error.response?.data?.error || error.message}`, 
+        `❌ Email sending error: ${error.response?.data?.error || error.message}`, 
         "error", 
         requestId
       );
@@ -127,7 +127,7 @@ const AdminPage = () => {
     try {
       // Show loading notification
       showEmailNotification(
-        `🔄 ${newStatus === "Approved" ? "Aprobando" : "Rechazando"} solicitud y enviando correo...`, 
+        `🔄 ${newStatus === "Approved" ? "Approving" : "Rejecting"} request and sending email...`, 
         "loading", 
         id
       );
@@ -137,7 +137,7 @@ const AdminPage = () => {
         `http://localhost:3000/test/requests/${id}`,
         {
           status: newStatus,
-          adminComments: newStatus === "Approved" ? "Aprobado" : "Rechazado",
+          adminComments: newStatus === "Approved" ? "Approved" : "Rejected",
         }
       );
 
@@ -152,7 +152,7 @@ const AdminPage = () => {
     } catch (error) {
       console.error("Error updating status:", error);
       showEmailNotification(
-        `❌ Error al ${newStatus === "Approved" ? "aprobar" : "rechazar"} la solicitud`, 
+        `❌ Error ${newStatus === "Approved" ? "approving" : "rejecting"} the request`, 
         "error", 
         id
       );
@@ -168,7 +168,7 @@ const AdminPage = () => {
 
   // Format ISO date string to local date format
   const formatIsoDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("es-CO", {
+    return new Date(dateString).toLocaleDateString("en-US", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
@@ -230,7 +230,7 @@ const AdminPage = () => {
         disabled={currentPage === 1}
         className="px-4 py-2 bg-bg border border-white/20 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/10 transition-colors duration-200"
       >
-        ← Anterior
+        ← Previous
       </button>
       
       <div className="flex space-x-1">
@@ -254,7 +254,7 @@ const AdminPage = () => {
         disabled={currentPage === totalPages}
         className="px-4 py-2 bg-bg border border-white/20 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/10 transition-colors duration-200"
       >
-        Siguiente →
+        Next →
       </button>
     </div>
   );
@@ -267,25 +267,25 @@ const AdminPage = () => {
           <thead>
             <tr className="bg-orange border-b border-white/10">
               <th className="text-left py-4 px-4 font-adi text-white text-sm lg:text-base tracking-wider">
-                USUARIO
+                USER
               </th>
               <th className="text-left py-4 px-4 font-adi text-white text-sm lg:text-base tracking-wider">
                 EMAIL
               </th>
               <th className="text-left py-4 px-4 font-adi text-white text-sm lg:text-base tracking-wider">
-                DESCRIPCIÓN
+                DESCRIPTION
               </th>
               <th className="text-left py-4 px-4 font-adi text-white text-sm lg:text-base tracking-wider">
-                FECHA SOLICITUD
+                REQUEST DATE
               </th>
               <th className="text-left py-4 px-4 font-adi text-white text-sm lg:text-base tracking-wider">
-                ESTADO
+                STATUS
               </th>
               <th className="text-left py-4 px-4 font-adi text-white text-sm lg:text-base tracking-wider">
-                ARCHIVOS
+                FILES
               </th>
               <th className="text-center py-4 px-4 font-adi text-white text-sm lg:text-base tracking-wider">
-                ACCIONES
+                ACTIONS
               </th>
             </tr>
           </thead>
@@ -342,7 +342,7 @@ const AdminPage = () => {
                     </div>
                   </td>
                   <td className="py-4 px-4 font-adi text-white/70 text-sm">
-                    {new Date(req.createdAt).toLocaleDateString("es-CO", {
+                    {new Date(req.createdAt).toLocaleDateString("en-US", {
                       day: "2-digit",
                       month: "2-digit",
                       year: "numeric",
@@ -363,11 +363,11 @@ const AdminPage = () => {
                         onClick={() => openModal(req.items)}
                         className="inline-flex items-center px-3 py-1 bg-orange/20 hover:bg-orange/30 text-orange border border-orange/50 rounded-lg transition-all duration-200 hover:scale-105 text-sm font-medium"
                       >
-                        📁 {count} archivo{count > 1 ? "s" : ""}
+                        📁 {count} file{count > 1 ? "s" : ""}
                       </button>
                     ) : (
                       <span className="text-white/40 italic text-sm">
-                        No hay archivos
+                        No files
                       </span>
                     )}
                   </td>
@@ -385,7 +385,7 @@ const AdminPage = () => {
                           }
                         `}
                       >
-                        {isLoading ? '🔄' : '✅'} Aprobar
+                        {isLoading ? '🔄' : '✅'} Approve
                       </button>
                       <button
                         onClick={() => updateStatus(req.id, "Rejected")}
@@ -398,7 +398,7 @@ const AdminPage = () => {
                           }
                         `}
                       >
-                        {isLoading ? '🔄' : '❌'} Rechazar
+                        {isLoading ? '🔄' : '❌'} Reject
                       </button>
                     </div>
                   </td>
@@ -413,7 +413,7 @@ const AdminPage = () => {
       {requestsData.length === 0 && (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">📋</div>
-          <p className="text-white/50 font-adi">No hay solicitudes disponibles</p>
+          <p className="text-white/50 font-adi">No requests available</p>
         </div>
       )}
     </div>
@@ -428,21 +428,21 @@ const AdminPage = () => {
             <tr className="bg-orange border-b border-white/10">
               {showPreview && (
                 <th className="text-left py-4 px-6 font-adi text-white text-lg tracking-wider">
-                  VISTA PREVIA
+                  PREVIEW
                 </th>
               )}
               <th className="text-left py-4 px-6 font-adi text-white text-lg tracking-wider">
-                NOMBRE
+                NAME
               </th>
               <th className="text-left py-4 px-6 font-adi text-white text-lg tracking-wider">
-                TIPO
+                TYPE
               </th>
               <th className="text-left py-4 px-6 font-adi text-white text-lg tracking-wider">
-                TAMAÑO
+                SIZE
               </th>
               {onAssetClick && (
                 <th className="text-center py-4 px-6 font-adi text-white text-lg tracking-wider">
-                  ACCIÓN
+                  ACTION
                 </th>
               )}
             </tr>
@@ -525,7 +525,7 @@ const AdminPage = () => {
                       }}
                       className="px-3 py-1 bg-orange/20 hover:bg-orange/30 text-orange border border-orange/50 rounded-lg transition-all duration-200 hover:scale-105 text-sm font-medium"
                     >
-                      👁️ Ver
+                      👁️ View
                     </button>
                   </td>
                 )}
@@ -539,7 +539,7 @@ const AdminPage = () => {
       {assets.length === 0 && (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">📁</div>
-          <p className="text-white/50 font-adi">No hay archivos disponibles</p>
+          <p className="text-white/50 font-adi">No files available</p>
         </div>
       )}
     </div>
@@ -554,7 +554,7 @@ const AdminPage = () => {
             {/* Latest requests section */}
             <div>
               <h3 className="text-3xl font-bebas text-white tracking-wider mb-4">
-                ÚLTIMAS SOLICITUDES
+                LATEST REQUESTS
               </h3>
               <RequestsTable requests={recentRequests} />
             </div>
@@ -562,7 +562,7 @@ const AdminPage = () => {
             {/* Statistics cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {[
-                { label: "Imágenes", type: "image", icon: "🖼️" },
+                { label: "Images", type: "image", icon: "🖼️" },
                 { label: "Videos", type: "video", icon: "🎥" },
                 { label: "Audios", type: "audio", icon: "🎵" },
               ].map(({ label, type, icon }) => {
@@ -599,7 +599,7 @@ const AdminPage = () => {
             {/* Latest uploaded files section */}
             <div>
               <h3 className="text-3xl font-bebas text-white tracking-wider mb-4">
-                ÚLTIMOS ARCHIVOS SUBIDOS
+                LATEST UPLOADED FILES
               </h3>
               <InventoryTable 
                 assets={recentAssets} 
@@ -615,10 +615,10 @@ const AdminPage = () => {
           <div>
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bebas text-white tracking-wider">
-                TODAS LAS SOLICITUDES
+                ALL REQUESTS
               </h3>
               <span className="text-white/70 font-adi">
-                Total: {requests.length} solicitudes
+                Total: {requests.length} requests
               </span>
             </div>
             <RequestsTable requests={paginatedRequests} showPagination={true} />
@@ -637,10 +637,10 @@ const AdminPage = () => {
           <div>
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bebas text-white tracking-wider">
-                INVENTARIO COMPLETO
+                COMPLETE INVENTORY
               </h3>
               <span className="text-white/70 font-adi">
-                Total: {assetsCatalog.length} archivos
+                Total: {assetsCatalog.length} files
               </span>
             </div>
             <InventoryTable 
@@ -727,9 +727,9 @@ const AdminPage = () => {
               {tabs.find(tab => tab.id === activeTab)?.name.toUpperCase()}
             </h1>
             <p className="text-white/70 font-adi">
-              {activeTab === 'dashboard' && 'Resumen general del sistema'}
-              {activeTab === 'requests' && 'Gestiona todas las solicitudes de usuarios'}
-              {activeTab === 'inventory' && 'Explora todos los archivos multimedia'}
+              {activeTab === 'dashboard' && 'General system overview'}
+              {activeTab === 'requests' && 'Manage all user requests'}
+              {activeTab === 'inventory' && 'Explore all multimedia files'}
             </p>
           </div>
 

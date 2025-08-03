@@ -21,7 +21,7 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
 
     switch (name) {
       case 'name':
-        if (!value.trim()) {
+        if (!value.trim()) { 
           newErrors.name = 'Name is required';
         } else if (value.trim().length < 2) {
           newErrors.name = 'Must be at least 2 characters';
@@ -109,7 +109,7 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
 
   
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col">
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         <div className="w-full max-w-lg mx-auto">
           <div className="mb-6">
@@ -122,7 +122,7 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5"> 
             <div className="space-y-2">
               <label className="block font-adi text-sm color-white">FULL NAME *</label>
               <input
@@ -132,7 +132,7 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
                 onChange={handleChange}
                 disabled={isSubmitting}
                 placeholder="Enter your full name"
-                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${errors.name ? 'border-red-500' : 'border-orange-500'} bg-orange/10`}
+                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${errors.name ? 'border-red-500' : 'border-orange'} bg-orange/10`}
                 required
               />
               {errors.name && ( // Display error message if validation fails
@@ -151,7 +151,7 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
                 onChange={handleChange}
                 disabled={isSubmitting}
                 placeholder="example@correo.com" 
-                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${errors.email ? 'border-red-500' : 'border-orange-500'} bg-orange/10`}
+                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${errors.email ? 'border-red-500' : 'border-orange'} bg-orange/10`}
                 required
               />
               {errors.email && (
@@ -171,7 +171,7 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
                 placeholder="Describe how you plan to use these assets..."
                 rows={3}
                 maxLength={500}
-                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 resize-none focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${errors.purpose ? 'border-red-500' : 'border-orange-500'} bg-orange/10`}
+                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 resize-none focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${errors.purpose ? 'border-red-500' : 'border-orange'} bg-orange/10`}
                 required
               />
               {errors.purpose && (
@@ -193,7 +193,7 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
                 onChange={handleChange}
                 disabled={isSubmitting}
                 min={hoy}
-                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${errors.deadline ? 'border-red-500' : 'border-orange-500'} bg-orange/10`}
+                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${errors.deadline ? 'border-red-500' : 'border-orange'} bg-orange/10`}
                 required
               />
               {errors.deadline && (
@@ -211,7 +211,7 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
               <ul className="space-y-1 text-sm color-white opacity-80 font-adi">
                 <li>• {assets.length} asset{assets.length !== 1 ? 's' : ''} selected{assets.length !== 1 ? 's' : ''}</li>
                 <li>• Applicant: {datos.name || 'Por completar'}</li>
-                <li>• Deadline: {datos.deadline ? new Date(datos.deadline).toLocaleDateString('es-ES') : 'Por seleccionar'}</li>
+                <li>• Deadline: {datos.deadline ? new Date(datos.deadline).toLocaleDateString('es-ES') : 'To be selected'}</li>
               </ul>
             </div>
 
@@ -223,18 +223,16 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
       </div>
 
       { /* Footer with buttons */ }
-      <div className="p-6 border-t border-orange-500/20 flex-shrink-0">
-        <div className="flex gap-10 justify-between">
+      <div className="p-6 border-t border-orange/20 flex-shrink-0">
+        <div className="flex justify-between">
           <Button 
-            text="← GO BACK" 
-            filled={false} 
+            text="← GO BACK"
             onClick={onBack}
             disabled={isSubmitting}
           />
 
           <Button
             text={isSubmitting ? "SENDING..." : "SEND →"}
-            filled={true}
             onClick={handleSubmit}
             // Disable if submitting or if there are validation errors
             disabled={isSubmitting || Object.keys(errors).length > 0 || !datos.name || !datos.email || !datos.purpose || !datos.deadline}
