@@ -135,17 +135,17 @@ const Card = ({ asset, selectedIds, onSelect, onOpenModal }) => {
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Information grid layout - responsive columns */}
-        <div className="p-3 sm:p-4 border-t-2 border-orange-400 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-x-12 items-center text-white text-center">
+        <div className="p-3 sm:p-4 border-t-2 border-orange-400 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-x-12 items-center text-white text-center">
           {/* Asset title section */}
           <div className="flex flex-col justify-center">
-            <h3 className="font-adi text-sm ">
+            <h3 className="font-adi text-sm truncate">
               {asset.titulo}
             </h3>
           </div>
 
           {/* File information section */}
           <div className="hidden sm:flex flex-col justify-center">
-            <p className="text-lg sm:text-sm lg:text-lg">{asset.type}</p>{" "}
+            <p className="text-sm sm:text-sm ">{asset.type}</p>{" "}
             {/* File type */}
             <p className="text-sm">{asset.dimensions}</p> {/* Dimensions */}
             <p className="text-sm">{asset.size}</p> {/* File size */}

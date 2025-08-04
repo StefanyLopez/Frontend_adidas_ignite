@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react(),tailwindcss(), svgr()],
   server: {
     proxy: {
-      '/api': 'http://localhost:3001' // Redirige /api al backend
+      '/api': 'http://localhost:3000'
       
     }
   }

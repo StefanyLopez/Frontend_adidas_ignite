@@ -36,9 +36,6 @@ const AdminPage = () => {
   const [loadingRequests, setLoadingRequests] = useState(new Set());
 
   // Date and pagination configuration
-  const today = new Date();
-  const selectedYear = today.getFullYear();
-  const selectedMonth = today.getMonth();
   const itemsPerPage = 10;
 
   // Media service instance for API calls
@@ -303,13 +300,10 @@ const AdminPage = () => {
               const getStatusStyle = (status) => {
                 switch (status?.toLowerCase()) {
                   case "approved":
-                  case "aprobado":
                     return "bg-green-900/50 text-green-200 border-green-500/50";
                   case "rejected":
-                  case "rechazado":
                     return "bg-red-900/50 text-red-200 border-red-500/50";
                   case "pending":
-                  case "pendiente":
                     return "bg-yellow-900/50 text-yellow-200 border-yellow-500/50";
                   default:
                     return "bg-gray-900/50 text-gray-200 border-gray-500/50";

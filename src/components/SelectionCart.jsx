@@ -133,21 +133,6 @@ const SelectionCart = ({ assets, onRemoveAsset, onContinue, onClose }) => {
                   <span>Size: {formatSize(getTotalSize())}</span>
                 </div>
 
-                {/* Action buttons */}
-                <div className="flex gap-2">
-                  <button
-                    onClick={onClose}
-                    className="flex-1 px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    Continue Selecting
-                  </button>
-                  <button
-                    onClick={onContinue}
-                    className="flex-1 px-4 py-2 bg-orange text-white rounded-lg hover:bg-orange-600 transition-colors font-medium"
-                  >
-                    Request Assets →
-                  </button>
-                </div>
               </div>
             </>
           )}

@@ -48,17 +48,17 @@ const HomePage = () => {
   }, [mediaService]);
 
   // Extract file extension from URL
-  const getExtension = (url) => {
+/*   const getExtension = (url) => {
     const m = url.match(/\.([a-zA-Z0-9]+)(\?.*)?$/);
     return m ? m[1].toLowerCase() : "";
-  };
+  }; */
 
   // Filter and search assets based on current filters
   const displayedAssets = useMemo(() => {
     let filtered = mediaAssets;
 
     // Filter by file extension
-    if (extensionFilter) {
+/*     if (extensionFilter) {
       filtered = filtered.filter(
         (asset) => getExtension(asset.url) === extensionFilter
       );
@@ -73,7 +73,7 @@ const HomePage = () => {
           asset.descripcion?.toLowerCase().includes(searchLower) ||
           asset.tags?.some((tag) => tag.toLowerCase().includes(searchLower))
       );
-    }
+    } */
 
     return filtered;
   }, [extensionFilter, searchTerm, mediaAssets]);

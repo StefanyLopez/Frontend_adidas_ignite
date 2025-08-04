@@ -41,12 +41,6 @@ const AssetModal = ({ asset, onClose }) => {
    * Get appropriate icon based on file type
    * @returns {string} Emoji icon for file type
    */
-  const getFileIcon = () => {
-    if (isImage) return "🖼️";
-    if (isVideo) return "🎬";
-    if (isAudio) return "🎵";
-    return "📄";
-  };
 
   return (
     <div
@@ -140,7 +134,7 @@ const AssetModal = ({ asset, onClose }) => {
               {asset.url && (
                 <audio
                   controls
-                  className="w-full max-w-md bg-black/30 rounded-lg backdrop-blur-sm"
+                  className="w-full max-w-md bg-black/30 rounded-full backdrop-blur-sm"
                 >
                   <source src={asset.url} type="audio/mpeg" />
                   Your browser does not support the audio element.

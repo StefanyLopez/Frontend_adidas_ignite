@@ -96,17 +96,11 @@ const AdminDashboard = ({ requests, onUpdateStatus, assetsCatalog }) => {
                 const getStatusStyle = (status) => {
                   switch (status?.toLowerCase()) {
                     case "approved":
-                    case "aprobado":
                       return "bg-green-900/50 text-green-200 border-green-500/50";
                     case "rejected":
-                    case "rechazado":
                       return "bg-red-900/50 text-red-200 border-red-500/50";
                     case "pending":
-                    case "pendiente":
                       return "bg-yellow-900/50 text-yellow-200 border-yellow-500/50";
-                    case "in progress":
-                    case "en progreso":
-                      return "bg-blue-900/50 text-blue-200 border-blue-500/50";
                     default:
                       return "bg-gray-900/50 text-gray-200 border-gray-500/50";
                   }
