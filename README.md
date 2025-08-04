@@ -54,16 +54,21 @@ This project enables marketing teams to view a digital asset gallery and submit 
 
 ## System Requirements
 
-```bash
-Install Node.js
-```
 
+
+- Install Node.js
 ---
 
 ## **Project Setup**
 
 Install all dependencies from the root:
 ```bash
+cd backend
+npm install
+```
+
+```bash
+cd frontend
 npm install
 ```
 
@@ -215,8 +220,7 @@ Interactive access:
 
 - **200 OK** – Email sent successfully  
 - **400 Bad Request** – Request not yet approved or rejected  
-- **404 Not Found** – Request not found  
-- **500 Internal Server Error** – Failed to send email  
+- **404 Not Found** – Request not found   
 
 ---
 
