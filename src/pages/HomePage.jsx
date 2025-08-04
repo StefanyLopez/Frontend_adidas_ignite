@@ -177,7 +177,7 @@ const HomePage = () => {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-bg text-white">
+    <div className="min-h-screen flex flex-col bg-bg text-white overflow-hidden">
       <Header onLoginClick={() => setShowLoginModal(true)} />
       <SplineBanner />
       <PartnersBar />
