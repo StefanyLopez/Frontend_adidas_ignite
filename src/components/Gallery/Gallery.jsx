@@ -201,7 +201,8 @@ const Gallery = ({ selectedIds = [], onSelect, onOpenModal }) => {
               className="grid gap-3 sm:gap-4 md:gap-6 lg:gap-8 justify-items-center"
               style={{
                 // Responsive grid with different min sizes for different screen sizes
-                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
+                gridTemplateColumns:
+                  "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
                 justifyContent: "center",
               }}
             >

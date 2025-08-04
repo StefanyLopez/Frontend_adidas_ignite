@@ -1,22 +1,21 @@
 @font-face {
   font-family: adineue;
-  src: url('../assets/fonts/adineue_PRO.ttf');
+  src: url("../assets/fonts/adineue_PRO.ttf");
 }
 @font-face {
   font-family: BebasNeue;
-  src: url('../assets/fonts/BebasNeue-Regular.ttf');
+  src: url("../assets/fonts/BebasNeue-Regular.ttf");
 }
 
 @import "tailwindcss";
-
 
 @theme {
   --font-adi: AdiNeue, sans-serif;
   --font-bebas: BebasNeue, sans-serif;
 
-  --color-orange: #FF9D00 ;
-  --color-white: #F2F2F2 ;
-  --color-bg: #171717 ;   
+  --color-orange: #ff9d00;
+  --color-white: #f2f2f2;
+  --color-bg: #171717;
 }
 
 @layer base {
@@ -56,13 +55,12 @@
   }
 
   @layer utilities {
-  .clip-path-custom {
-    clip-path: polygon(0 36%, 98.5% 0, 100% 100%, 2% 100%);
-  }
+    .clip-path-custom {
+      clip-path: polygon(0 36%, 98.5% 0, 100% 100%, 2% 100%);
+    }
 
-  .clip-path-custom-search {
-    clip-path: polygon(0 36%, 94% 0, 100% 100%, 8% 100%);
+    .clip-path-custom-search {
+      clip-path: polygon(0 36%, 94% 0, 100% 100%, 8% 100%);
+    }
   }
-}
-
 }

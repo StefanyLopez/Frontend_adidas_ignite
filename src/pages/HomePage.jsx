@@ -47,34 +47,9 @@ const HomePage = () => {
       .catch((err) => console.error("Error loading assets:", err));
   }, [mediaService]);
 
-  // Extract file extension from URL
-/*   const getExtension = (url) => {
-    const m = url.match(/\.([a-zA-Z0-9]+)(\?.*)?$/);
-    return m ? m[1].toLowerCase() : "";
-  }; */
-
   // Filter and search assets based on current filters
   const displayedAssets = useMemo(() => {
     let filtered = mediaAssets;
-
-    // Filter by file extension
-/*     if (extensionFilter) {
-      filtered = filtered.filter(
-        (asset) => getExtension(asset.url) === extensionFilter
-      );
-    }
-
-    // Filter by search term (title, description, tags)
-    if (searchTerm.trim()) {
-      const searchLower = searchTerm.toLowerCase().trim();
-      filtered = filtered.filter(
-        (asset) =>
-          asset.titulo?.toLowerCase().includes(searchLower) ||
-          asset.descripcion?.toLowerCase().includes(searchLower) ||
-          asset.tags?.some((tag) => tag.toLowerCase().includes(searchLower))
-      );
-    } */
-
     return filtered;
   }, [extensionFilter, searchTerm, mediaAssets]);
 
@@ -113,13 +88,6 @@ const HomePage = () => {
     console.log("Closing AssetModal");
     setIsPreviewOpen(false);
     setSelectedPreviewAsset(null);
-  };
-
-  // Continue from cart to request form
-  const handleContinueToRequest = () => {
-    console.log("Continuing to request with assets:", selectedAssets);
-    setShowCart(false);
-    setShowPopup(true);
   };
 
   // Submit request with form data and selected assets

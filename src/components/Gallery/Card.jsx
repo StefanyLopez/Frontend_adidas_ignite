@@ -138,9 +138,7 @@ const Card = ({ asset, selectedIds, onSelect, onOpenModal }) => {
         <div className="p-3 sm:p-4 border-t-2 border-orange-400 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-x-12 items-center text-white text-center">
           {/* Asset title section */}
           <div className="flex flex-col justify-center">
-            <h3 className="font-adi text-sm truncate">
-              {asset.titulo}
-            </h3>
+            <h3 className="font-adi text-sm truncate">{asset.titulo}</h3>
           </div>
 
           {/* File information section */}

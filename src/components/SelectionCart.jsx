@@ -132,7 +132,6 @@ const SelectionCart = ({ assets, onRemoveAsset, onContinue, onClose }) => {
                   <span>Total: {assets.length} assets</span>
                   <span>Size: {formatSize(getTotalSize())}</span>
                 </div>
-
               </div>
             </>
           )}
