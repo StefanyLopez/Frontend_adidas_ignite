@@ -1,5 +1,3 @@
-import React from "react";
-
 /**
  * SelectionCart - Modal cart displaying selected assets with management options
  * @param {Array} assets - Array of selected asset objects
@@ -8,7 +6,6 @@ import React from "react";
  * @param {Function} onClose - Callback to close cart modal
  */
 const SelectionCart = ({ assets, onRemoveAsset, onContinue, onClose }) => {
-  
   /**
    * Calculate total size of all selected assets
    * @returns {number} Total size in bytes
@@ -46,7 +43,6 @@ const SelectionCart = ({ assets, onRemoveAsset, onContinue, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-2xl max-w-md w-full max-h-[80vh] flex flex-col">
-        
         {/* Cart header with title and asset count */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
           <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
@@ -81,7 +77,9 @@ const SelectionCart = ({ assets, onRemoveAsset, onContinue, onClose }) => {
                 {assets.map((item) => {
                   // Extract asset display info with fallbacks
                   const name = item.titulo || item.name || "Unnamed file";
-                  const size = item.size ? formatSize(item.size) : "Unknown size";
+                  const size = item.size
+                    ? formatSize(item.size)
+                    : "Unknown size";
 
                   return (
                     <div

@@ -22,20 +22,26 @@ const DashboardAssetsModal = ({ assets, onClose, assetsCatalog = [] }) => {
     if (!Array.isArray(assetIds) || !Array.isArray(assetsCatalog)) {
       return [];
     }
-    
+
     return assetIds
-      .map(id => assetsCatalog.find(asset => asset.id === id))
-      .filter(asset => asset !== undefined); // Filter out not found assets
+      .map((id) => assetsCatalog.find((asset) => asset.id === id))
+      .filter((asset) => asset !== undefined); // Filter out not found assets
   };
 
   // Determine if 'assets' are IDs or complete objects
-  const assetsToShow = Array.isArray(assets) && assets.length > 0
-    ? (typeof assets[0] === 'string' ? getAssetsFromIds(assets) : assets)
-    : [];
+  const assetsToShow =
+    Array.isArray(assets) && assets.length > 0
+      ? typeof assets[0] === "string"
+        ? getAssetsFromIds(assets)
+        : assets
+      : [];
 
   // Validate assets to display
   if (!assetsToShow || assetsToShow.length === 0) {
-    console.log("AssetsModal: No valid assets to display", { assets, assetsCatalog });
+    console.log("AssetsModal: No valid assets to display", {
+      assets,
+      assetsCatalog,
+    });
   }
 
   console.log("AssetsModal opened with assets:", assetsToShow);
@@ -63,10 +69,16 @@ const DashboardAssetsModal = ({ assets, onClose, assetsCatalog = [] }) => {
    * @returns {string} Emoji icon for asset type
    */
   const getAssetIcon = (asset) => {
-    const isImage = asset.tipo ? asset.tipo.includes("image") : asset.type?.startsWith("image/");
-    const isVideo = asset.tipo ? asset.tipo.includes("video") : asset.type?.startsWith("video/");
-    const isAudio = asset.tipo ? asset.tipo.includes("audio") : asset.type?.startsWith("audio/");
-    
+    const isImage = asset.tipo
+      ? asset.tipo.includes("image")
+      : asset.type?.startsWith("image/");
+    const isVideo = asset.tipo
+      ? asset.tipo.includes("video")
+      : asset.type?.startsWith("video/");
+    const isAudio = asset.tipo
+      ? asset.tipo.includes("audio")
+      : asset.type?.startsWith("audio/");
+
     if (isImage) return "🖼️";
     if (isVideo) return "🎬";
     if (isAudio) return "🎵";
@@ -119,8 +131,8 @@ const DashboardAssetsModal = ({ assets, onClose, assetsCatalog = [] }) => {
       `}</style>
 
       {/* Main modal with assets grid */}
-      <div 
-        className="fixed inset-0 bg-black/70 flex items-center justify-center z-50" 
+      <div
+        className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
         onClick={onClose}
       >
         <div
@@ -148,17 +160,19 @@ const DashboardAssetsModal = ({ assets, onClose, assetsCatalog = [] }) => {
                 <div className="text-6xl mb-4">📁</div>
                 <p className="text-white/70 text-xl">No files found</p>
                 <p className="text-white/50 text-sm mt-2">
-                  {assets && assets.length > 0 
-                    ? "The requested files are not available in the catalog" 
+                  {assets && assets.length > 0
+                    ? "The requested files are not available in the catalog"
                     : "No files to display"}
                 </p>
               </div>
             ) : (
               // Assets grid
-              <div className="grid gap-4" 
-                   style={{ 
-                     gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))'
-                   }}>
+              <div
+                className="grid gap-4"
+                style={{
+                  gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+                }}
+              >
                 {assetsToShow.map((asset, index) => (
                   <div
                     key={`${asset.id}-${index}`}
@@ -175,7 +189,7 @@ const DashboardAssetsModal = ({ assets, onClose, assetsCatalog = [] }) => {
                             className="w-full h-full object-cover"
                             onError={(e) => {
                               console.error("Error loading image:", asset.url);
-                              e.target.style.display = 'none';
+                              e.target.style.display = "none";
                             }}
                           />
                           {/* Watermark overlay */}
@@ -189,14 +203,14 @@ const DashboardAssetsModal = ({ assets, onClose, assetsCatalog = [] }) => {
                         </div>
                       ) : (
                         // Icon fallback for non-images
-                        <div className="text-4xl">
-                          {getAssetIcon(asset)}
-                        </div>
+                        <div className="text-4xl">{getAssetIcon(asset)}</div>
                       )}
-                      
+
                       {/* Hover overlay */}
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-                        <span className="text-white font-bold">👁️ View details</span>
+                        <span className="text-white font-bold">
+                          👁️ View details
+                        </span>
                       </div>
                     </div>
 
@@ -228,7 +242,8 @@ const DashboardAssetsModal = ({ assets, onClose, assetsCatalog = [] }) => {
             {assetsToShow.length > 0 && (
               <div className="mt-8 text-center">
                 <p className="text-white/30 text-sm">
-                  {assetsToShow.length} file{assetsToShow.length !== 1 ? 's' : ''} total
+                  {assetsToShow.length} file
+                  {assetsToShow.length !== 1 ? "s" : ""} total
                 </p>
               </div>
             )}
@@ -248,9 +263,9 @@ const DashboardAssetsModal = ({ assets, onClose, assetsCatalog = [] }) => {
 
       {/* Individual asset preview modal */}
       {showIndividualModal && selectedAsset && (
-        <AssetModal 
-          asset={selectedAsset} 
-          onClose={handleCloseIndividualModal} 
+        <AssetModal
+          asset={selectedAsset}
+          onClose={handleCloseIndividualModal}
         />
       )}
     </>

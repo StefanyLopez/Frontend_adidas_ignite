@@ -1,4 +1,4 @@
-import Spline from '@splinetool/react-spline'; // Import Spline component
+import Spline from "@splinetool/react-spline"; // Import Spline component
 
 // This component renders a full-screen Spline scene
 export default function SplineBanner() {
@@ -10,6 +10,3 @@ export default function SplineBanner() {
     </div>
   );
 }
-
-
-

@@ -3,7 +3,8 @@ import ButtonShape from "../assets/Vector_3.svg?react"; // Import  SVG as a Reac
 
 // component for the button
 const Button = ({ text = "LOGIN", icon, onClick, disabled = false }) => {
-  return ( // Button component with Framer Motion animations
+  return (
+    // Button component with Framer Motion animations
     // Main button container with hover effect
     <motion.button
       whileHover={{ scale: 1.05 }}
@@ -13,16 +14,12 @@ const Button = ({ text = "LOGIN", icon, onClick, disabled = false }) => {
       className="font-bebas relative group w-fit flex items-center justify-center gap-2 px-6"
     >
       {/* SVG back */}
-      <motion.div
-        className="absolute top-2 left-4 rotate-0 transition-transform duration-300 group-hover:rotate-4"
-      >
+      <motion.div className="absolute top-2 left-4 rotate-0 transition-transform duration-300 group-hover:rotate-4">
         <ButtonShape className="stroke-orange w-52 h-auto" />
       </motion.div>
 
       {/* SVG front */}
-      <motion.div
-        className="absolute top-0 left-0 transition-colors duration-300"
-      >
+      <motion.div className="absolute top-0 left-0 transition-colors duration-300">
         <ButtonShape className="stroke-white fill-bg group-hover:fill-orange w-52 h-auto " />
       </motion.div>
 

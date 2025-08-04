@@ -54,4 +54,15 @@
     color: var(--color-secondary);
     line-height: 1.6;
   }
+
+  @layer utilities {
+  .clip-path-custom {
+    clip-path: polygon(0 36%, 98.5% 0, 100% 100%, 2% 100%);
+  }
+
+  .clip-path-custom-search {
+    clip-path: polygon(0 36%, 94% 0, 100% 100%, 8% 100%);
+  }
+}
+
 }

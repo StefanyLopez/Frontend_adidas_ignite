@@ -11,7 +11,7 @@ import { watermark } from "../../assetsData.js";
 const Card = ({ asset, selectedIds, onSelect, onOpenModal }) => {
   // State to track hover status for animations and info panel display
   const [isHovered, setIsHovered] = useState(false);
-  
+
   // Check if current asset is selected by comparing with selected IDs array
   const isSelected = selectedIds.includes(asset.id);
 
@@ -26,21 +26,22 @@ const Card = ({ asset, selectedIds, onSelect, onOpenModal }) => {
       className={`relative w-full max-w-[400px] min-w-[300px] overflow-visible transition-all duration-300 ${
         isSelected ? "ring-4 ring-orange rounded-xl" : ""
       }`}
-      onClick={handleSelect} 
+      onClick={handleSelect}
     >
       {/* Main card container with hover animations */}
       <div
         className="w-full aspect-square cursor-pointer transition-transform duration-300 ease-out transform origin-center"
         style={{
           // Scale and lift effect on hover
-          transform: isHovered ? 'scale(1.05) translateY(-10px)' : 'scale(1) translateY(0px)',
+          transform: isHovered
+            ? "scale(1.05) translateY(-10px)"
+            : "scale(1) translateY(0px)",
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Asset display container */}
         <div className="relative w-full h-full overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 shadow-lg">
-          
           {/* Image asset rendering */}
           {asset.tipo.includes("image") && asset.url && (
             <img
@@ -95,18 +96,18 @@ const Card = ({ asset, selectedIds, onSelect, onOpenModal }) => {
           <div
             className="absolute inset-0 transition-colors duration-300 z-20"
             style={{
-              backgroundColor: isHovered ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
+              backgroundColor: isHovered ? "rgba(0, 0, 0, 0.2)" : "transparent",
             }}
           />
 
           {/* Selection indicator - checkmark in top-right corner */}
           <div
             className={`absolute top-2 right-2 w-6 h-6 rounded-full transition-all duration-300 z-30 flex items-center justify-center ${
-              isSelected 
-                ? 'bg-orange opacity-100 scale-110'  // Selected state: visible with checkmark
-                : isHovered 
-                ? 'bg-orange/70 opacity-100'         // Hovered state: semi-transparent
-                : 'bg-orange/50 opacity-0'           // Default state: hidden
+              isSelected
+                ? "bg-orange opacity-100 scale-110" // Selected state: visible with checkmark
+                : isHovered
+                ? "bg-orange/70 opacity-100" // Hovered state: semi-transparent
+                : "bg-orange/50 opacity-0" // Default state: hidden
             }`}
           >
             {/* Checkmark icon for selected state */}
@@ -121,13 +122,13 @@ const Card = ({ asset, selectedIds, onSelect, onOpenModal }) => {
       <div
         className="absolute left-0 right-0 overflow-hidden transition-all duration-500 ease-out z-40"
         style={{
-          top: '100%',
-          height: isHovered ? '180px' : '0px',                    // Expand/collapse height
-          opacity: isHovered ? 1 : 0,                             // Fade in/out
-          transform: isHovered ? 'translateY(0px)' : 'translateY(-10px)', // Slide animation
-          backgroundImage: "url(/HoverCard.png)",                 // Background image
-          backgroundSize: 'cover',
-          backgroundPosition: 'center top 180px',
+          top: "100%",
+          height: isHovered ? "180px" : "0px", // Expand/collapse height
+          opacity: isHovered ? 1 : 0, // Fade in/out
+          transform: isHovered ? "translateY(0px)" : "translateY(-10px)", // Slide animation
+          backgroundImage: "url(/HoverCard.png)", // Background image
+          backgroundSize: "cover",
+          backgroundPosition: "center top 180px",
         }}
         // Keep panel open when hovering over it
         onMouseEnter={() => setIsHovered(true)}
@@ -135,17 +136,19 @@ const Card = ({ asset, selectedIds, onSelect, onOpenModal }) => {
       >
         {/* Information grid layout - responsive columns */}
         <div className="p-3 sm:p-4 border-t-2 border-orange-400 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-x-12 items-center text-white text-center">
-          
           {/* Asset title section */}
           <div className="flex flex-col justify-center">
-            <h3 className="font-adi text-sm sm:text-sm lg:text-lg">{asset.titulo}</h3>
+            <h3 className="font-adi text-sm ">
+              {asset.titulo}
+            </h3>
           </div>
 
           {/* File information section */}
           <div className="hidden sm:flex flex-col justify-center">
-            <p className="text-base sm:text-sm lg:text-xl">{asset.type}</p>      {/* File type */}
-            <p className="text-md">{asset.dimensions}</p>                        {/* Dimensions */}
-            <p className="text-sm">{asset.size}</p>                              {/* File size */}
+            <p className="text-lg sm:text-sm lg:text-lg">{asset.type}</p>{" "}
+            {/* File type */}
+            <p className="text-sm">{asset.dimensions}</p> {/* Dimensions */}
+            <p className="text-sm">{asset.size}</p> {/* File size */}
           </div>
 
           {/* Preview button section */}
@@ -165,7 +168,9 @@ const Card = ({ asset, selectedIds, onSelect, onOpenModal }) => {
                 className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 mb-1"
               />
               {/* Preview button label */}
-              <span className="text-white text-xs sm:text-sm lg:text-base font-adi">Preview</span>
+              <span className="text-white text-xs sm:text-sm lg:text-base font-adi">
+                Preview
+              </span>
             </button>
           </div>
         </div>

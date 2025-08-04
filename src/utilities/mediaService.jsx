@@ -13,15 +13,25 @@ export class MediaService {
    */
   async fetchAssets() {
     // Define static file lists for each media type
-    const images = ['sports_(1).jpg', 'sports_(2).jpg', 'sports_(3).jpg', 'sports_(4).jpg', 'sports_(5).jpg', 'sports_(6).jpg', 'sports_(7).jpg', 'sports_(8).jpg', 'sports_(1).png'];
-    const audios = ['audio1.mp3', 'high-impact.mp3'];
-    const videos = ['basket.mp4', 'box.mp4', 'running.mp4', 'shoes.mp4'];
+    const images = [
+      "sports_(1).jpg",
+      "sports_(2).jpg",
+      "sports_(3).jpg",
+      "sports_(4).jpg",
+      "sports_(5).jpg",
+      "sports_(6).jpg",
+      "sports_(7).jpg",
+      "sports_(8).jpg",
+      "sports_(1).png",
+    ];
+    const audios = ["audio1.mp3", "high-impact.mp3"];
+    const videos = ["basket.mp4", "box.mp4", "running.mp4", "shoes.mp4"];
 
     // Combine all files with their type and folder information
     const allFiles = [
-      ...images.map((file) => ({ file, tipo: 'image', carpeta: 'images' })),
-      ...audios.map((file) => ({ file, tipo: 'audio', carpeta: 'audios' })),
-      ...videos.map((file) => ({ file, tipo: 'video', carpeta: 'videos' })),
+      ...images.map((file) => ({ file, tipo: "image", carpeta: "images" })),
+      ...audios.map((file) => ({ file, tipo: "audio", carpeta: "audios" })),
+      ...videos.map((file) => ({ file, tipo: "video", carpeta: "videos" })),
     ];
 
     // Process each file to get metadata and create asset objects
@@ -70,13 +80,13 @@ export class MediaService {
 
       // Return complete asset object with all metadata
       return {
-        id: `${tipo}-${file}`,          // Unique identifier
-        tipo,                          // Media type (image/video/audio)
-        url,                           // Full URL to asset
-        titulo: file,                  // Display name
-        type,                          // MIME type from server
-        size,                          // File size in bytes
-        dimensions,                    // Image dimensions (width x height)
+        id: `${tipo}-${file}`, // Unique identifier
+        tipo, // Media type (image/video/audio)
+        url, // Full URL to asset
+        titulo: file, // Display name
+        type, // MIME type from server
+        size, // File size in bytes
+        dimensions, // Image dimensions (width x height)
       };
     });
 

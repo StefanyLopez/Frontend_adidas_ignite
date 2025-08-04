@@ -2,7 +2,12 @@ import { useState } from "react";
 import Button from "../Button.jsx";
 
 // Allows users to submit a request for selected assets
-export default function RequestForm({ assets = [], onBack, onSubmit, isSubmitting = false }) {
+export default function RequestForm({
+  assets = [],
+  onBack,
+  onSubmit,
+  isSubmitting = false,
+}) {
   const [datos, setFormData] = useState({
     name: "",
     email: "",
@@ -16,46 +21,46 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
   const hoy = new Date().toISOString().split("T")[0];
 
   // Validates each field in real-time
-  const validateField = (name, value) => { 
+  const validateField = (name, value) => {
     const newErrors = { ...errors };
 
     switch (name) {
-      case 'name':
-        if (!value.trim()) { 
-          newErrors.name = 'Name is required';
+      case "name":
+        if (!value.trim()) {
+          newErrors.name = "Name is required";
         } else if (value.trim().length < 2) {
-          newErrors.name = 'Must be at least 2 characters';
+          newErrors.name = "Must be at least 2 characters";
         } else {
           delete newErrors.name;
         }
         break;
-      
-      case 'email':
+
+      case "email":
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!value) {
-          newErrors.email = 'Email is required';
+          newErrors.email = "Email is required";
         } else if (!emailRegex.test(value)) {
-          newErrors.email = 'Invalid email format';
+          newErrors.email = "Invalid email format";
         } else {
           delete newErrors.email;
         }
         break;
-      
-      case 'purpose':
+
+      case "purpose":
         if (!value.trim()) {
-          newErrors.purpose = 'Purpose is required';
+          newErrors.purpose = "Purpose is required";
         } else if (value.trim().length < 10) {
-          newErrors.purpose = 'Must be at least 10 characters';
+          newErrors.purpose = "Must be at least 10 characters";
         } else {
           delete newErrors.purpose;
         }
         break;
-      
-      case 'deadline':
+
+      case "deadline":
         if (!value) {
-          newErrors.deadline = 'Deadline is required';
+          newErrors.deadline = "Deadline is required";
         } else if (value < hoy) {
-          newErrors.deadline = 'Deadline cannot be in the past';
+          newErrors.deadline = "Deadline cannot be in the past";
         } else {
           delete newErrors.deadline;
         }
@@ -77,7 +82,7 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
     }
 
     setFormData((prev) => ({ ...prev, [name]: value }));
-    
+
     // Validate the field in real-time
     if (value) {
       validateField(name, value);
@@ -89,13 +94,17 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
     e.preventDefault();
 
     // Validate all fields
-    Object.keys(datos).forEach(key => {
+    Object.keys(datos).forEach((key) => {
       validateField(key, datos[key]);
     });
 
     // Check if there are any errors or if required fields are empty
-    const hasErrors = Object.keys(errors).length > 0 || 
-                     !datos.name || !datos.email || !datos.purpose || !datos.deadline;
+    const hasErrors =
+      Object.keys(errors).length > 0 ||
+      !datos.name ||
+      !datos.email ||
+      !datos.purpose ||
+      !datos.deadline;
 
     if (hasErrors) {
       return;
@@ -107,7 +116,6 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
     });
   };
 
-  
   return (
     <div className="flex flex-col">
       <div className="flex-1 overflow-y-auto custom-scrollbar">
@@ -118,13 +126,16 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
             </h2>
             <p className="text-base color-white opacity-70 font-adi">
               {/* Display the number of selected assets */}
-              Request {assets.length} asset{assets.length !== 1 ? 's' : ''} selected {assets.length !== 1 ? 's' : ''}
+              Request {assets.length} asset{assets.length !== 1 ? "s" : ""}{" "}
+              selected {assets.length !== 1 ? "s" : ""}
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5"> 
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <label className="block font-adi text-sm color-white">FULL NAME *</label>
+              <label className="block font-adi text-sm color-white">
+                FULL NAME *
+              </label>
               <input
                 type="text"
                 name="name"
@@ -132,7 +143,9 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
                 onChange={handleChange}
                 disabled={isSubmitting}
                 placeholder="Enter your full name"
-                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${errors.name ? 'border-red-500' : 'border-orange'} bg-orange/10`}
+                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${
+                  errors.name ? "border-red-500" : "border-orange"
+                } bg-orange/10`}
                 required
               />
               {errors.name && ( // Display error message if validation fails
@@ -143,15 +156,19 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
             </div>
 
             <div className="space-y-2">
-              <label className="block font-adi text-sm color-white">EMAIL *</label>
+              <label className="block font-adi text-sm color-white">
+                EMAIL *
+              </label>
               <input
                 type="email"
                 name="email"
                 value={datos.email}
                 onChange={handleChange}
                 disabled={isSubmitting}
-                placeholder="example@correo.com" 
-                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${errors.email ? 'border-red-500' : 'border-orange'} bg-orange/10`}
+                placeholder="example@correo.com"
+                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${
+                  errors.email ? "border-red-500" : "border-orange"
+                } bg-orange/10`}
                 required
               />
               {errors.email && (
@@ -162,7 +179,9 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
             </div>
 
             <div className="space-y-2">
-              <label className="block font-adi text-sm color-white">PURPOSE OF USE *</label>
+              <label className="block font-adi text-sm color-white">
+                PURPOSE OF USE *
+              </label>
               <textarea
                 name="purpose"
                 value={datos.purpose}
@@ -171,7 +190,9 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
                 placeholder="Describe how you plan to use these assets..."
                 rows={3}
                 maxLength={500}
-                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 resize-none focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${errors.purpose ? 'border-red-500' : 'border-orange'} bg-orange/10`}
+                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 resize-none focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${
+                  errors.purpose ? "border-red-500" : "border-orange"
+                } bg-orange/10`}
                 required
               />
               {errors.purpose && (
@@ -185,7 +206,9 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
             </div>
 
             <div className="space-y-2">
-              <label className="block font-adi text-sm color-white">DEADLINE *</label>
+              <label className="block font-adi text-sm color-white">
+                DEADLINE *
+              </label>
               <input
                 type="date"
                 name="deadline"
@@ -193,7 +216,9 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
                 onChange={handleChange}
                 disabled={isSubmitting}
                 min={hoy}
-                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${errors.deadline ? 'border-red-500' : 'border-orange'} bg-orange/10`}
+                className={`w-full px-4 py-3 rounded-xl border-2 text-base transition-all duration-200 focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed color-white font-adi ${
+                  errors.deadline ? "border-red-500" : "border-orange"
+                } bg-orange/10`}
                 required
               />
               {errors.deadline && (
@@ -202,45 +227,60 @@ export default function RequestForm({ assets = [], onBack, onSubmit, isSubmittin
                 </p>
               )}
               <p className="text-xs color-white opacity-60 font-adi">
-                Minimum date: {new Date(hoy).toLocaleDateString('es-ES')}
+                Minimum date: {new Date(hoy).toLocaleDateString("es-ES")}
               </p>
             </div>
 
             <div className="p-4 rounded-xl border-2 border-orange-500 bg-orange/10">
-              <h3 className="font-bold mb-3 text-base color-white font-adi">📊 SUMMARY OF YOUR APPLICATION:</h3>
+              <h3 className="font-bold mb-3 text-base color-white font-adi">
+                📊 SUMMARY OF YOUR APPLICATION:
+              </h3>
               <ul className="space-y-1 text-sm color-white opacity-80 font-adi">
-                <li>• {assets.length} asset{assets.length !== 1 ? 's' : ''} selected{assets.length !== 1 ? 's' : ''}</li>
-                <li>• Applicant: {datos.name || 'Por completar'}</li>
-                <li>• Deadline: {datos.deadline ? new Date(datos.deadline).toLocaleDateString('es-ES') : 'To be selected'}</li>
+                <li>
+                  • {assets.length} asset{assets.length !== 1 ? "s" : ""}{" "}
+                  selected{assets.length !== 1 ? "s" : ""}
+                </li>
+                <li>• Applicant: {datos.name || "Por completar"}</li>
+                <li>
+                  • Deadline:{" "}
+                  {datos.deadline
+                    ? new Date(datos.deadline).toLocaleDateString("es-ES")
+                    : "To be selected"}
+                </li>
               </ul>
             </div>
 
             <p className="text-xs text-center leading-relaxed pt-2 color-white opacity-60 font-adi">
-              By submitting this application, you confirm that the information provided is accurate and that you will use the assets in accordance with the terms of use.
+              By submitting this application, you confirm that the information
+              provided is accurate and that you will use the assets in
+              accordance with the terms of use.
             </p>
           </form>
         </div>
       </div>
 
-      { /* Footer with buttons */ }
+      {/* Footer with buttons */}
       <div className="p-6 border-t border-orange/20 flex-shrink-0">
         <div className="flex justify-between">
-          <Button 
-            text="← GO BACK"
-            onClick={onBack}
-            disabled={isSubmitting}
-          />
+          <Button text="← GO BACK" onClick={onBack} disabled={isSubmitting} />
 
           <Button
             text={isSubmitting ? "SENDING..." : "SEND →"}
             onClick={handleSubmit}
             // Disable if submitting or if there are validation errors
-            disabled={isSubmitting || Object.keys(errors).length > 0 || !datos.name || !datos.email || !datos.purpose || !datos.deadline}
+            disabled={
+              isSubmitting ||
+              Object.keys(errors).length > 0 ||
+              !datos.name ||
+              !datos.email ||
+              !datos.purpose ||
+              !datos.deadline
+            }
           />
         </div>
       </div>
 
-      { /* Styles for custom scrollbar */ }
+      {/* Styles for custom scrollbar */}
       <style jsx>{`
         .custom-scrollbar {
           scrollbar-width: thin;

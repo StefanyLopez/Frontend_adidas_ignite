@@ -10,7 +10,8 @@ export default function Footer() {
       />
       {/* Footer text with current year and authors */}
       <p className="text-orange font-adi text-md">
-        © {new Date().getFullYear()} Daniel Colmenares - Stefany López | All Rights Reserved
+        © {new Date().getFullYear()} Daniel Colmenares - Stefany López | All
+        Rights Reserved
       </p>
     </footer>
   );

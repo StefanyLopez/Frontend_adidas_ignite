@@ -1,63 +1,64 @@
-import { Search } from "lucide-react"; // Importing Search icon from lucide-react
+import { Search } from "lucide-react";
 
-// FilterMenu component to handle filtering and searching
-export default function FilterMenu({ 
-  extensionFilter, // Current filter state
-  setExtensionFilter, // Function to update filter state
-  searchTerm, // Current search term
-  setSearchTerm // Function to update search term
+export default function FilterMenu({
+  extensionFilter,
+  setExtensionFilter,
+  searchTerm,
+  setSearchTerm,
 }) {
-  
-  // If the clicked filter is already active, remove it (set to null)
-  // Otherwise, set the filter to the clicked extension
   const handleFilterClick = (ext) => {
     setExtensionFilter(extensionFilter === ext ? null : ext);
   };
 
-  // Updates the searchTerm state with the current input value
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
   return (
-    <div className="relative w-full mt-10 mb-8 px-16">
+    <div className="relative w-full mt-6 md:mt-10 mb-6 md:mb-8 px-4 sm:px-8 lg:px-16">
+      {/* Contenedor principal */}
       <div
-        className="bg-orange px-16 py-4 flex items-center justify-between text-white font-bold text-lg"
-        style={{ // Clip path for the section
-          clipPath: "polygon(0 36%, 98.5% 0, 100% 100%, 2% 100%)", // Adjusted to match the design
+        className="bg-orange rounded-lg px-4 sm:px-6 lg:px-12 py-4 flex flex-col lg:flex-row items-center justify-between text-white font-bold gap-6 lg:gap-4"
+        style={{
+          clipPath:
+            "polygon(0 36%, 98.5% 0, 100% 100%, 2% 100%)",
         }}
       >
-        <div className="flex px-16 gap-20 translate-y-[14px] font-adi text-2xl">
-          {["jpg", "png", "mp4", "mp3"].map((type) => ( 
-            <button // Button for each filter type
-              key={type} // Unique key for each button
-              className={`transition-all duration-200 drop-shadow-md ${
-                extensionFilter === type // Check if this filter is active
-                  ? "text-bg scale-110 font-black" // Active 
-                  : "hover:text-bg hover:scale-105" // Inactive 
+        {/* Filtros */}
+        <div className="flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-8 lg:gap-8 font-adi text-base sm:text-lg lg:text-xl sm:translate-y-5">
+          {["jpg", "png", "mp4", "mp3", "svg"].map((type) => (
+            <button
+              key={type}
+              className={`transition-all duration-200 drop-shadow-md px-2 py-1 rounded ${
+                extensionFilter === type
+                  ? "text-bg scale-110 font-black bg-white/20"
+                  : "hover:text-bg hover:scale-105 hover:bg-white/10"
               }`}
-              onClick={() => handleFilterClick(type)} 
+              onClick={() => handleFilterClick(type)}
             >
               {type.toUpperCase()}
             </button>
           ))}
         </div>
 
-        {/* Input for search functionality */}
-        <div
-          className="flex items-center bg-white text-bg px-24 py-4 shadow-md"
-          style={{
-            clipPath: "polygon(0 36%, 94% 0, 100% 100%, 8% 100%)",
-          }}
-        >
-          <input
-            type="text"
-            placeholder="Search"
-            value={searchTerm}
-            onChange={handleSearchChange} // Update search term on input change
-            className="font-adi translate-y-[8px] bg-transparent outline-none w-72"
-          />
-          <Search className="w-6 h-6 ml-2 text-gray-600" /> {/* Search icon */}
+        {/* Barra de búsqueda */}
+        <div className="w-full lg:w-auto">
+          <div
+            className="flex items-center bg-white text-bg px-4 sm:px-15 lg:px-8 py-2 sm:py-3 lg:py-3 shadow-md rounded-md"
+            style={{
+              clipPath:
+                "polygon(0 36%, 94% 0, 100% 100%, 8% 100%)",
+            }}
+          >
+            <Search className="w-5 h-5 mr-2 text-gray-600 flex-shrink-0 translate-y-2" />
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="font-adi bg-transparent outline-none w-full text-sm sm:text-base translate-y-2"
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -16,9 +16,15 @@ const AssetModal = ({ asset, onClose }) => {
   console.log("AssetModal opened with asset:", asset); // Debug
 
   // Determine media type based on asset properties
-  const isImage = asset.tipo ? asset.tipo.includes("image") : asset.type?.startsWith("image/");
-  const isVideo = asset.tipo ? asset.tipo.includes("video") : asset.type?.startsWith("video/");
-  const isAudio = asset.tipo ? asset.tipo.includes("audio") : asset.type?.startsWith("audio/");
+  const isImage = asset.tipo
+    ? asset.tipo.includes("image")
+    : asset.type?.startsWith("image/");
+  const isVideo = asset.tipo
+    ? asset.tipo.includes("video")
+    : asset.type?.startsWith("video/");
+  const isAudio = asset.tipo
+    ? asset.tipo.includes("audio")
+    : asset.type?.startsWith("audio/");
 
   /**
    * Format file size from bytes to readable format
@@ -43,12 +49,11 @@ const AssetModal = ({ asset, onClose }) => {
   };
 
   return (
-    <div 
-      className="fixed inset-0 flex items-center justify-center z-50" 
-      style={{ backgroundColor: '#171717d8' }}
+    <div
+      className="fixed inset-0 flex items-center justify-center z-50"
+      style={{ backgroundColor: "#171717d8" }}
       onClick={onClose}
     >
-
       <div
         className="relative flex flex-col lg:flex-row max-w-[95vw] max-h-[95vh] rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm"
         onClick={(e) => e.stopPropagation()}
@@ -63,12 +68,11 @@ const AssetModal = ({ asset, onClose }) => {
 
         {/* Media section - left side */}
         <div className="bg-bg flex items-center justify-center p-6 lg:p-8 rounded-l-3xl relative min-h-[50vh] lg:min-h-[70vh] lg:min-w-[60vw]">
-
           {/* Responsive background image */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <img 
-              src="/loginbg.png" 
-              alt="Background decoration" 
+            <img
+              src="/loginbg.png"
+              alt="Background decoration"
               className="w-80 h-20 sm:w-96 md:w-450 md:h-100 object-contain filter "
             />
           </div>
@@ -95,7 +99,7 @@ const AssetModal = ({ asset, onClose }) => {
               )}
             </div>
           )}
-          
+
           {/* Video rendering */}
           {isVideo && asset.url && (
             <div className="relative">
@@ -115,7 +119,7 @@ const AssetModal = ({ asset, onClose }) => {
               )}
             </div>
           )}
-          
+
           {/* Audio rendering with circular display */}
           {isAudio && (
             <div className="flex flex-col items-center relative">
@@ -134,7 +138,10 @@ const AssetModal = ({ asset, onClose }) => {
               </div>
               {/* Audio controls */}
               {asset.url && (
-                <audio controls className="w-full max-w-md bg-black/30 rounded-lg backdrop-blur-sm">
+                <audio
+                  controls
+                  className="w-full max-w-md bg-black/30 rounded-lg backdrop-blur-sm"
+                >
                   <source src={asset.url} type="audio/mpeg" />
                   Your browser does not support the audio element.
                 </audio>
@@ -146,7 +153,9 @@ const AssetModal = ({ asset, onClose }) => {
           {!isImage && !isVideo && !isAudio && (
             <div className="text-white text-center p-12">
               <div className="text-8xl mb-4">📄</div>
-              <p className="text-xl mb-2">File type not supported for preview</p>
+              <p className="text-xl mb-2">
+                File type not supported for preview
+              </p>
               <p className="text-sm text-gray-300">
                 Type: {asset.tipo || asset.type || "Unknown"}
               </p>
@@ -156,7 +165,6 @@ const AssetModal = ({ asset, onClose }) => {
 
         {/* Information panel - right side */}
         <div className="bg-bg backdrop-blur-sm p-8 lg:p-10 flex flex-col justify-center gap-6 lg:w-[400px] rounded-r-3xl border-l border-white/10">
-          
           {/* Header with title */}
           <div className="text-center border-b border-white/20 pb-6">
             <h2 className="text-3xl font-bold font-bebas text-orange tracking-wider">
@@ -166,7 +174,6 @@ const AssetModal = ({ asset, onClose }) => {
 
           {/* Information cards */}
           <div className="space-y-4">
-            
             {/* File type card */}
             <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10">
               <div className="flex items-center gap-3">
@@ -183,9 +190,13 @@ const AssetModal = ({ asset, onClose }) => {
               <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 bg-orange rounded-full"></div>
-                  <span className="text-gray-300 text-sm font-medium">DIMENSIONS</span>
+                  <span className="text-gray-300 text-sm font-medium">
+                    DIMENSIONS
+                  </span>
                 </div>
-                <p className="text-white font-adi mt-1 text-lg">{asset.dimensions}</p>
+                <p className="text-white font-adi mt-1 text-lg">
+                  {asset.dimensions}
+                </p>
               </div>
             )}
 
@@ -205,21 +216,25 @@ const AssetModal = ({ asset, onClose }) => {
               <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 bg-orange rounded-full"></div>
-                  <span className="text-gray-300 text-sm font-medium">LOCATION</span>
+                  <span className="text-gray-300 text-sm font-medium">
+                    LOCATION
+                  </span>
                 </div>
                 <p className="text-white/70 font-adi mt-1 text-sm break-all leading-relaxed">
                   {asset.url}
                 </p>
               </div>
             )}
-
           </div>
 
           {/* Footer with logo */}
           <div className="text-center pt-6 border-t border-white/20">
-            <img src="../logos/adidas.png" alt="Logo" className="h-8 object-contain mx-auto opacity-60" />
+            <img
+              src="../logos/adidas.png"
+              alt="Logo"
+              className="h-8 object-contain mx-auto opacity-60"
+            />
           </div>
-
         </div>
       </div>
 

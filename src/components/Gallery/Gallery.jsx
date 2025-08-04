@@ -3,13 +3,12 @@ import { useMediaAssets } from "../../hooks/useMediaAssets";
 import Card from "./Card";
 import AssetModal from "../AssetModal.jsx";
 import FilterMenu from "../FilterMenu";
-import Button from "../Button.jsx"
-
+import Button from "../Button.jsx";
 
 /**
  * Gallery Component - Main gallery view displaying filterable asset cards
  * Handles asset selection, filtering, pagination, and modal display
- * 
+ *
  * @param {Array} selectedIds - Array of currently selected asset IDs from parent
  * @param {Function} onSelect - Callback function to handle asset selection
  * @param {Function} onOpenModal - Callback function to open asset preview modal
@@ -17,17 +16,17 @@ import Button from "../Button.jsx"
 const Gallery = ({ selectedIds = [], onSelect, onOpenModal }) => {
   // Fetch assets data using custom hook
   const { assets, loading, error } = useMediaAssets();
-  
+
   // Modal state management
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  
+
   // Pagination state - controls how many assets are visible
   const [visibleCount, setVisibleCount] = useState(8);
-  
+
   // Filtering states
   const [extensionFilter, setExtensionFilter] = useState(null); // Filter by file extension
-  const [searchTerm, setSearchTerm] = useState("");             // Search term for text filtering
+  const [searchTerm, setSearchTerm] = useState(""); // Search term for text filtering
 
   // Reference to the grid container
   const containerRef = useRef(null);
@@ -64,7 +63,7 @@ const Gallery = ({ selectedIds = [], onSelect, onOpenModal }) => {
           // Search in title, description, and tags
           asset.titulo?.toLowerCase().includes(searchLower) ||
           asset.descripcion?.toLowerCase().includes(searchLower) ||
-          asset.tags?.some(tag => tag.toLowerCase().includes(searchLower))
+          asset.tags?.some((tag) => tag.toLowerCase().includes(searchLower))
       );
     }
 
@@ -121,10 +120,12 @@ const Gallery = ({ selectedIds = [], onSelect, onOpenModal }) => {
   };
 
   // Loading state display
-  if (loading) return <p className="text-center text-white">Loading assets...</p>;
-  
+  if (loading)
+    return <p className="text-center text-white">Loading assets...</p>;
+
   // Error state display
-  if (error) return <p className="text-center text-red-500">Error: {error.message}</p>;
+  if (error)
+    return <p className="text-center text-red-500">Error: {error.message}</p>;
 
   return (
     <div className="relative">
@@ -136,19 +137,21 @@ const Gallery = ({ selectedIds = [], onSelect, onOpenModal }) => {
         setSearchTerm={setSearchTerm}
       />
 
-      <div className="px-4 sm:px-6 lg:px-8">
+      <div className="px-2 sm:px-4 md:px-6 lg:px-8">
         {/* Gallery header with title and results counter */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bebas text-orange">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-2">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bebas text-orange">
             Asset Gallery
           </h2>
-          
+
           {/* Results counter with filter status indicator */}
-          <div className="text-white opacity-70 font-adi">
-            {filteredAssets.length} asset{filteredAssets.length !== 1 ? 's' : ''} 
+          <div className="text-white opacity-70 font-adi text-sm sm:text-base">
+            {filteredAssets.length} asset
+            {filteredAssets.length !== 1 ? "s" : ""}
             {(extensionFilter || searchTerm) && (
               <span className="text-orange ml-2">
-                (filtered{extensionFilter && ` - ${extensionFilter.toUpperCase()}`})
+                (filtered
+                {extensionFilter && ` - ${extensionFilter.toUpperCase()}`})
               </span>
             )}
           </div>
@@ -156,30 +159,31 @@ const Gallery = ({ selectedIds = [], onSelect, onOpenModal }) => {
 
         {/* Empty state when no assets match current filters */}
         {filteredAssets.length === 0 ? (
-          <div className="text-center py-16">
+          <div className="text-center py-8 sm:py-12 md:py-16">
             {/* Search icon with background */}
-            <div className="w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center"
-                 style={{ backgroundColor: 'rgba(255, 157, 0, 0.1)' }}>
-              <span className="text-4xl">🔍</span>
+            <div
+              className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full mx-auto mb-4 sm:mb-6 flex items-center justify-center"
+              style={{ backgroundColor: "rgba(255, 157, 0, 0.1)" }}
+            >
+              <span className="text-2xl sm:text-3xl md:text-4xl">🔍</span>
             </div>
-            
+
             {/* No results message */}
-            <h3 className="text-2xl font-adi text-white mb-4">
+            <h3 className="text-xl sm:text-2xl font-adi text-white mb-3 sm:mb-4">
               No assets found
             </h3>
-            
+
             {/* Contextual message based on active filters */}
-            <p className="text-white opacity-70 mb-6">
-              {searchTerm && extensionFilter 
+            <p className="text-white opacity-70 mb-4 sm:mb-6 text-sm sm:text-base px-4">
+              {searchTerm && extensionFilter
                 ? `There are no assets of type ${extensionFilter.toUpperCase()} that match "${searchTerm}"`
-                : searchTerm 
+                : searchTerm
                 ? `There are no assets that match "${searchTerm}"`
-                : extensionFilter 
+                : extensionFilter
                 ? `There are no assets of type ${extensionFilter.toUpperCase()}`
-                : "No assets available"
-              }
+                : "No assets available"}
             </p>
-            
+
             {/* Clear filters button - only shown when filters are active */}
             {(searchTerm || extensionFilter) && (
               <Button
@@ -194,11 +198,11 @@ const Gallery = ({ selectedIds = [], onSelect, onOpenModal }) => {
             {/* Responsive grid that adapts to content */}
             <div
               ref={containerRef}
-              className="grid gap-4 sm:gap-6 lg:gap-8 justify-items-center"
+              className="grid gap-3 sm:gap-4 md:gap-6 lg:gap-8 justify-items-center"
               style={{
-                // Auto-fit grid with min-max sizing for responsive behavior
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 400px))',
-                justifyContent: 'center'
+                // Responsive grid with different min sizes for different screen sizes
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
+                justifyContent: "center",
               }}
             >
               {/* Render visible asset cards */}
@@ -206,8 +210,8 @@ const Gallery = ({ selectedIds = [], onSelect, onOpenModal }) => {
                 <Card
                   key={asset.id}
                   asset={asset}
-                  selectedIds={selectedIds}        // Pass selected IDs from HomePage
-                  onSelect={handleCardSelect}      // Use function that connects with HomePage
+                  selectedIds={selectedIds} // Pass selected IDs from HomePage
+                  onSelect={handleCardSelect} // Use function that connects with HomePage
                   onOpenModal={onOpenModal || handleOpenModal} // Use HomePage function or fallback
                 />
               ))}
@@ -215,10 +219,10 @@ const Gallery = ({ selectedIds = [], onSelect, onOpenModal }) => {
 
             {/* Load More button - shown only when there are more assets to load */}
             {visibleCount < filteredAssets.length && (
-              <div className="mt-10 flex justify-center items-left ">
-                <Button 
+              <div className="mt-6 sm:mt-8 md:mt-10 flex justify-center">
+                <Button
                   text={`Load More (${filteredAssets.length - visibleCount})`}
-                  filled={false} 
+                  filled={false}
                   onClick={handleLoadMore}
                 />
               </div>
@@ -226,16 +230,17 @@ const Gallery = ({ selectedIds = [], onSelect, onOpenModal }) => {
 
             {/* Additional information when filters are active and results exist */}
             {(extensionFilter || searchTerm) && visibleAssets.length > 0 && (
-              <div className="mt-8 text-center">
+              <div className="mt-6 sm:mt-8 text-center">
                 {/* Status message showing current pagination state */}
-                <p className="text-white opacity-60 text-sm">
-                  Showing {Math.min(visibleCount, filteredAssets.length)} of {filteredAssets.length} filtered assets
+                <p className="text-white opacity-60 text-xs sm:text-sm">
+                  Showing {Math.min(visibleCount, filteredAssets.length)} of{" "}
+                  {filteredAssets.length} filtered assets
                 </p>
-                
+
                 {/* Quick link to clear filters and see all assets */}
                 <button
                   onClick={handleClearFilters}
-                  className="text-orange hover:text-orange-400 transition-colors text-sm mt-2 underline"
+                  className="text-orange hover:text-orange-400 transition-colors text-xs sm:text-sm mt-2 underline"
                 >
                   See all assets
                 </button>
@@ -247,10 +252,7 @@ const Gallery = ({ selectedIds = [], onSelect, onOpenModal }) => {
 
       {/* Conditional modal rendering - only shown when an asset is selected for preview */}
       {showModal && selectedAsset && (
-        <AssetModal 
-          asset={selectedAsset} 
-          onClose={handleCloseModal} 
-        />
+        <AssetModal asset={selectedAsset} onClose={handleCloseModal} />
       )}
     </div>
   );

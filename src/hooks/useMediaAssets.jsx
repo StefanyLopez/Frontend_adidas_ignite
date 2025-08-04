@@ -4,7 +4,7 @@ import { MediaService } from "../utilities/mediaService.jsx";
 /**
  * Custom React hook for managing media assets
  * Provides loading state, error handling, and asset data from MediaService
- * 
+ *
  * @returns {Object} Object containing:
  *   - assets: Array of media asset objects
  *   - loading: Boolean indicating if assets are being fetched
@@ -13,10 +13,10 @@ import { MediaService } from "../utilities/mediaService.jsx";
 export const useMediaAssets = () => {
   // State for storing fetched media assets
   const [assets, setAssets] = useState([]);
-  
+
   // Loading state to track fetch progress
   const [loading, setLoading] = useState(true);
-  
+
   // Error state to handle fetch failures
   const [error, setError] = useState(null);
 
